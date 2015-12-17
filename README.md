@@ -4,7 +4,7 @@ Core [![Packagist License][badge_license]](LICENSE.md)
 [![HHVM Status][badge_hhvm]](http://hhvm.h4cc.de/package/arcanesoft/core)
 [![Coverage Status][badge_coverage]](https://scrutinizer-ci.com/g/ARCANESOFT/Core/?branch=master)
 [![Scrutinizer Code Quality][badge_quality]](https://scrutinizer-ci.com/g/ARCANESOFT/Core/?branch=master)
-[![SensioLabs Insight][badge_insight]](https://insight.sensiolabs.com/projects/[id])
+[![SensioLabs Insight][badge_insight]](https://insight.sensiolabs.com/projects/ed5a48b5-5be8-41f2-bd69-401d429bb031)
 [![Github Issues][badge_issues]](https://github.com/ARCANESOFT/Core/issues)
 
 [![Packagist][badge_package]](https://packagist.org/packages/arcanesoft/core)
@@ -16,7 +16,7 @@ Core [![Packagist License][badge_license]](LICENSE.md)
 [badge_hhvm]:      https://img.shields.io/hhvm/arcanesoft/core.svg?style=flat-square
 [badge_coverage]:  https://img.shields.io/scrutinizer/coverage/g/ARCANESOFT/Core.svg?style=flat-square
 [badge_quality]:   https://img.shields.io/scrutinizer/g/ARCANESOFT/Core.svg?style=flat-square
-[badge_insight]:   https://img.shields.io/sensiolabs/i/[id].svg?style=flat-square
+[badge_insight]:   https://img.shields.io/sensiolabs/i/ed5a48b5-5be8-41f2-bd69-401d429bb031.svg?style=flat-square
 [badge_issues]:    https://img.shields.io/github/issues/ARCANESOFT/Core.svg?style=flat-square
 
 [badge_package]:   https://img.shields.io/badge/package-arcanesoft/core-blue.svg?style=flat-square
