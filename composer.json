@@ -1,6 +1,6 @@
 {
     "name":        "arcanesoft/core",
-    "description": "The core foreach ARCANESOFT's module",
+    "description": "The core package foreach ARCANESOFT's module",
     "keywords":    ["arcanedev", "arcanesoft", "laravel", "core", "support"],
     "homepage":    "https://github.com/ARCANESOFT/Core",
     "authors": [
