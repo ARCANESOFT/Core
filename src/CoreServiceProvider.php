@@ -35,16 +35,6 @@ class CoreServiceProvider extends PackageServiceProvider
         return dirname(__DIR__);
     }
 
-    /**
-     * Get config key.
-     *
-     * @return string
-     */
-    protected function getConfigKey()
-    {
-        return str_slug($this->vendor . ' ' . $this->package, '.');
-    }
-
     /* ------------------------------------------------------------------------------------------------
      |  Main Functions
      | ------------------------------------------------------------------------------------------------
