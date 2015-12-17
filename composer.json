@@ -15,6 +15,7 @@
     "require": {
         "php":                   ">=5.5.9",
         "arcanedev/breadcrumbs": "~2.0",
+        "arcanedev/hasher":      "~1.0",
         "arcanedev/seo-helper":  "~0.17",
         "arcanedev/settings":    "~1.0",
         "arcanedev/support":     "~3.0",

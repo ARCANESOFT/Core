@@ -22,8 +22,10 @@ class PackagesServiceProvider extends ServiceProvider
     public function register()
     {
         $this->registerSettingsPackage();
+        $this->registerHasherPackage();
         $this->registerSeoHelperPackage();
         $this->registerBreadcrumbsPackage();
+        $this->registerAliases();
     }
 
     /* ------------------------------------------------------------------------------------------------
@@ -37,6 +39,15 @@ class PackagesServiceProvider extends ServiceProvider
     {
         $this->app->register(\Arcanedev\Settings\SettingsServiceProvider::class);
         $this->alias('Setting', \Arcanedev\Settings\Facades\Setting::class);
+    }
+
+    /**
+     * Register the Hasher Package.
+     */
+    private function registerHasherPackage()
+    {
+        $this->app->register(\Arcanedev\Hasher\HasherServiceProvider::class);
+        $this->alias('Hasher', \Arcanedev\Hasher\Facades\Hasher::class);
     }
 
     /**
