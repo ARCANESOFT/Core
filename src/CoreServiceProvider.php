@@ -46,6 +46,7 @@ class CoreServiceProvider extends PackageServiceProvider
     {
         $this->registerArcanesoftDatabase();
         $this->app->register(Providers\PackagesServiceProvider::class);
+        $this->app->register(Providers\HelpersServiceProvider::class);
     }
 
     /**
