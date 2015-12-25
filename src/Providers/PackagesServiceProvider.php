@@ -25,6 +25,7 @@ class PackagesServiceProvider extends ServiceProvider
         $this->registerHasherPackage();
         $this->registerSeoHelperPackage();
         $this->registerBreadcrumbsPackage();
+        $this->registerNotifyPackage();
         $this->registerAliases();
     }
 
@@ -66,5 +67,14 @@ class PackagesServiceProvider extends ServiceProvider
     {
         $this->app->register(\Arcanedev\Breadcrumbs\BreadcrumbsServiceProvider::class);
         $this->alias('Breadcrumbs', \Arcanedev\Breadcrumbs\Facades\Breadcrumbs::class);
+    }
+
+    /**
+     * Register the Notify Package.
+     */
+    private function registerNotifyPackage()
+    {
+        $this->app->register(\Arcanedev\Notify\NotifyServiceProvider::class);
+        $this->alias('Notify', \Arcanedev\Notify\Facades\Notify::class);
     }
 }

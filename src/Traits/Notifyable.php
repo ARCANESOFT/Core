@@ -13,56 +13,75 @@ trait Notifyable
      | ------------------------------------------------------------------------------------------------
      */
     /**
-     * Get the notification instance.
+     * The notify instance.
      *
-     * @return \Arcanesoft\Core\Helpers\Notification
+     * @param  string|null  $message
+     *
+     * @return \Arcanedev\Notify\Contracts\Notify
      */
-    protected function notification()
+    protected function notify($message = null)
     {
-        return notification();
+        return notify($message);
     }
 
     /**
      * Notify a success alert.
      *
-     * @param  string  $title
-     * @param  string  $message
+     * @param  string       $message
+     * @param  string|null  $title
+     * @param  array        $options
      */
-    protected function notifySuccess($title, $message = '')
+    protected function notifySuccess($message, $title = null, array $options = [])
     {
-        $this->notification()->success($title, $message);
+        $this->notifyFlash($message, 'success', $title, $options);
     }
 
     /**
      * Notify a danger alert.
      *
-     * @param  string  $title
-     * @param  string  $message
+     * @param  string       $message
+     * @param  string|null  $title
+     * @param  array        $options
      */
-    protected function notifyDanger($title, $message = '')
+    protected function notifyDanger($message, $title = null, array $options = [])
     {
-        $this->notification()->danger($title, $message);
+        $this->notifyFlash($message, 'danger', $title, $options);
     }
 
     /**
      * Notify a warning alert.
      *
-     * @param  string  $title
-     * @param  string  $message
+     * @param  string       $message
+     * @param  string|null  $title
+     * @param  array        $options
      */
-    protected function notifyWarning($title, $message = '')
+    protected function notifyWarning($message, $title = null, array $options = [])
     {
-        $this->notification()->warning($title, $message);
+        $this->notifyFlash($message, 'warning', $title, $options);
     }
 
     /**
      * Notify an info alert.
      *
-     * @param  string  $title
-     * @param  string  $message
+     * @param  string       $message
+     * @param  string|null  $title
+     * @param  array        $options
      */
-    protected function notifyInfo($title, $message = '')
+    protected function notifyInfo($message, $title = null, array $options = [])
     {
-        $this->notification()->warning($title, $message);
+        $this->notifyFlash($message, 'info', $title, $options);
+    }
+
+    /**
+     * Notify a flash alert.
+     *
+     * @param  string       $message
+     * @param  string       $type
+     * @param  string|null  $title
+     * @param  array        $options
+     */
+    protected function notifyFlash($message, $type, $title = null, array $options = [])
+    {
+        $this->notify()->flash($message, $type, array_merge($options, compact('title')));
     }
 }
