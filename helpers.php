@@ -1,12 +1,12 @@
 <?php
 
-if ( ! function_exists('notification')) {
+if ( ! function_exists('sidebar')) {
     /**
-     * Get the notifications helper.
+     * Get the sidebar helper.
      *
-     * @return \Arcanesoft\Core\Helpers\Notification
+     * @return \Arcanesoft\Core\Helpers\Sidebar\Contracts\Sidebar
      */
-    function notification() {
-        return app('arcanesoft.helpers.notification');
+    function sidebar() {
+        return app(\Arcanesoft\Core\Helpers\Sidebar\Contracts\Sidebar::class);
     }
 }
