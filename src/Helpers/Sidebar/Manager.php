@@ -85,7 +85,6 @@ class Manager implements Contracts\Sidebar
     public function setCurrent($currentName)
     {
         $this->currentName = $currentName;
-        $this->items->setCurrent($currentName);
 
         return $this;
     }
@@ -160,7 +159,7 @@ class Manager implements Contracts\Sidebar
      */
     public function render($view = null)
     {
-        $this->setView($view);
+        $this->syncCurrentName()->setView($view);
 
         return view($this->view, ['sidebarItems' => $this->items])->render();
     }
@@ -177,5 +176,21 @@ class Manager implements Contracts\Sidebar
     public function hasItems()
     {
         return ! $this->items->isEmpty();
+    }
+
+    /* ------------------------------------------------------------------------------------------------
+     |  Other Functions
+     | ------------------------------------------------------------------------------------------------
+     */
+    /**
+     * Sync the current name wih the sidebar items.
+     *
+     * @return self
+     */
+    private function syncCurrentName()
+    {
+        $this->items->setCurrent($this->currentName);
+
+        return $this;
     }
 }
