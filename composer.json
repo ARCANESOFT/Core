@@ -13,19 +13,20 @@
     "type":    "library",
     "license": "MIT",
     "require": {
-        "php":                   ">=5.5.9",
-        "arcanedev/breadcrumbs": "~2.0",
-        "arcanedev/hasher":      "~1.0",
-        "arcanedev/notify":      "^3.1.0",
-        "arcanedev/seo-helper":  "~0.17",
-        "arcanedev/settings":    "~1.0",
-        "arcanedev/support":     "~3.0",
-        "arcanesoft/contracts":  "~1.0"
+        "php":                    ">=5.5.9",
+        "arcanedev/breadcrumbs":  "~2.0",
+        "arcanedev/hasher":       "~1.0",
+        "arcanedev/laravel-html": "~5.0",
+        "arcanedev/notify":       "^3.1.0",
+        "arcanedev/seo-helper":   "~0.17",
+        "arcanedev/settings":     "~1.0",
+        "arcanedev/support":      "~3.0",
+        "arcanesoft/contracts":   "~1.0"
     },
     "require-dev": {
-        "orchestra/testbench":   "~3.0",
-        "phpunit/phpcov":        "~2.0",
-        "phpunit/phpunit":       "~4.0|~5.0"
+        "orchestra/testbench":    "~3.1.0",
+        "phpunit/phpcov":         "~2.0",
+        "phpunit/phpunit":        "~4.0|~5.0"
     },
     "autoload": {
         "psr-4": {
