@@ -1,5 +1,11 @@
 <?php namespace Arcanesoft\Core\Providers;
 
+use Arcanedev\Breadcrumbs;
+use Arcanedev\Hasher;
+use Arcanedev\LaravelHtml;
+use Arcanedev\Notify;
+use Arcanedev\SeoHelper;
+use Arcanedev\Settings;
 use Arcanedev\Support\ServiceProvider;
 
 /**
@@ -15,17 +21,17 @@ class PackagesServiceProvider extends ServiceProvider
      | ------------------------------------------------------------------------------------------------
      */
     /**
-     * Register the service provider.
-     *
-     * @return void
+     * {@inheritdoc}
      */
     public function register()
     {
-        $this->registerSettingsPackage();
-        $this->registerHasherPackage();
-        $this->registerSeoHelperPackage();
         $this->registerBreadcrumbsPackage();
+        $this->registerHasherPackage();
+        $this->registerLaravelHtmlPackage();
         $this->registerNotifyPackage();
+        $this->registerSeoHelperPackage();
+        $this->registerSettingsPackage();
+
         $this->registerAliases();
     }
 
@@ -38,8 +44,8 @@ class PackagesServiceProvider extends ServiceProvider
      */
     private function registerSettingsPackage()
     {
-        $this->app->register(\Arcanedev\Settings\SettingsServiceProvider::class);
-        $this->alias('Setting', \Arcanedev\Settings\Facades\Setting::class);
+        $this->app->register(Settings\SettingsServiceProvider::class);
+        $this->alias('Setting', Settings\Facades\Setting::class);
     }
 
     /**
@@ -47,8 +53,18 @@ class PackagesServiceProvider extends ServiceProvider
      */
     private function registerHasherPackage()
     {
-        $this->app->register(\Arcanedev\Hasher\HasherServiceProvider::class);
-        $this->alias('Hasher', \Arcanedev\Hasher\Facades\Hasher::class);
+        $this->app->register(Hasher\HasherServiceProvider::class);
+        $this->alias('Hasher', Hasher\Facades\Hasher::class);
+    }
+
+    /**
+     * Register the Laravel Html Package
+     */
+    private function registerLaravelHtmlPackage()
+    {
+        $this->app->register(LaravelHtml\HtmlServiceProvider::class);
+        $this->alias('Html', LaravelHtml\Facades\Html::class);
+        $this->alias('Form', LaravelHtml\Facades\Form::class);
     }
 
     /**
@@ -56,8 +72,8 @@ class PackagesServiceProvider extends ServiceProvider
      */
     private function registerSeoHelperPackage()
     {
-        $this->app->register(\Arcanedev\SeoHelper\SeoHelperServiceProvider::class);
-        $this->alias('SeoHelper', \Arcanedev\SeoHelper\Facades\SeoHelper::class);
+        $this->app->register(SeoHelper\SeoHelperServiceProvider::class);
+        $this->alias('SeoHelper', SeoHelper\Facades\SeoHelper::class);
     }
 
     /**
@@ -65,8 +81,8 @@ class PackagesServiceProvider extends ServiceProvider
      */
     private function registerBreadcrumbsPackage()
     {
-        $this->app->register(\Arcanedev\Breadcrumbs\BreadcrumbsServiceProvider::class);
-        $this->alias('Breadcrumbs', \Arcanedev\Breadcrumbs\Facades\Breadcrumbs::class);
+        $this->app->register(Breadcrumbs\BreadcrumbsServiceProvider::class);
+        $this->alias('Breadcrumbs', Breadcrumbs\Facades\Breadcrumbs::class);
     }
 
     /**
@@ -74,7 +90,7 @@ class PackagesServiceProvider extends ServiceProvider
      */
     private function registerNotifyPackage()
     {
-        $this->app->register(\Arcanedev\Notify\NotifyServiceProvider::class);
-        $this->alias('Notify', \Arcanedev\Notify\Facades\Notify::class);
+        $this->app->register(Notify\NotifyServiceProvider::class);
+        $this->alias('Notify', Notify\Facades\Notify::class);
     }
 }
