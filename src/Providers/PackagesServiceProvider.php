@@ -5,7 +5,7 @@ use Arcanedev\Hasher;
 use Arcanedev\LaravelHtml;
 use Arcanedev\Notify;
 use Arcanedev\SeoHelper;
-use Arcanedev\Settings;
+use Arcanesoft\Settings;
 use Arcanedev\Support\ServiceProvider;
 
 /**
@@ -45,7 +45,7 @@ class PackagesServiceProvider extends ServiceProvider
     private function registerSettingsPackage()
     {
         $this->app->register(Settings\SettingsServiceProvider::class);
-        $this->alias('Setting', Settings\Facades\Setting::class);
+        $this->alias('Settings', Settings\Facades\Settings::class);
     }
 
     /**

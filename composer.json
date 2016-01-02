@@ -19,9 +19,9 @@
         "arcanedev/laravel-html": "~5.0",
         "arcanedev/notify":       "^3.1.0",
         "arcanedev/seo-helper":   "~0.17",
-        "arcanedev/settings":     "~1.0",
         "arcanedev/support":      "~3.0",
-        "arcanesoft/contracts":   "~1.0"
+        "arcanesoft/contracts":   "~1.0",
+        "arcanesoft/settings":    "*"
     },
     "require-dev": {
         "orchestra/testbench":    "~3.1.0",
