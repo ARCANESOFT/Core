@@ -21,7 +21,7 @@
         "arcanedev/seo-helper":   "~0.17",
         "arcanedev/support":      "~3.0",
         "arcanesoft/contracts":   "~1.0",
-        "arcanesoft/settings":    "*"
+        "arcanesoft/settings":    "~0.1"
     },
     "require-dev": {
         "orchestra/testbench":    "~3.1.0",
