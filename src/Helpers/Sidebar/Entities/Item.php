@@ -194,7 +194,7 @@ class Item implements Arrayable
         $item = self::make(
             $array['name'],
             $array['title'],
-            array_get($array, 'url', '#'),
+            self::getUrlFromArray($array),
             array_get($array, 'icon', null)
         );
 
@@ -203,6 +203,22 @@ class Item implements Arrayable
         $item->addChildren(array_get($array, 'children', []));
 
         return $item;
+    }
+
+    /**
+     * Get url from array.
+     *
+     * @param  array  $array
+     *
+     * @return string
+     */
+    private static function getUrlFromArray(array $array)
+    {
+        if (array_has($array, 'route')) {
+            return route(array_get($array, 'route'));
+        }
+
+        return array_get($array, 'url', '#');
     }
 
     /**
