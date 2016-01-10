@@ -19,7 +19,7 @@ abstract class PackageServiceProvider extends ServiceProvider
      *
      * @var string
      */
-    protected $vendor       = 'arcanesoft';
+    protected $vendor = 'arcanesoft';
 
     /* ------------------------------------------------------------------------------------------------
      |  Getters & Setters
@@ -46,7 +46,7 @@ abstract class PackageServiceProvider extends ServiceProvider
      */
     protected function getSidebarFolder()
     {
-        return $this->getConfigFolder() . DS . 'sidebar' . DS . $this->package;
+        return $this->getConfigFolder() . DS . 'sidebar';
     }
 
     /**
