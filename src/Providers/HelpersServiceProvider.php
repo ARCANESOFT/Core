@@ -43,7 +43,7 @@ class HelpersServiceProvider extends ServiceProvider
      */
     private function registerSidebarHelper()
     {
-        $this->app->singleton(
+        $this->singleton(
             'arcanesoft.helpers.sidebar',
             Helpers\Sidebar\Manager::class
         );
