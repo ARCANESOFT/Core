@@ -1,8 +1,8 @@
 <?php namespace Arcanesoft\Core\Providers;
 
 use Arcanesoft\Core\Bases\RouteServiceProvider as ServiceProvider;
-use Illuminate\Routing\Router;
 use Arcanesoft\Core\Http\Middleware;
+use Illuminate\Contracts\Routing\Registrar as Router;
 
 /**
  * Class     RouteServiceProvider
@@ -33,7 +33,7 @@ class RouteServiceProvider extends ServiceProvider
     /**
      * Define the routes for the application.
      *
-     * @param  \Illuminate\Routing\Router  $router
+     * @param  \Illuminate\Contracts\Routing\Registrar  $router
      */
     public function map(Router $router)
     {
