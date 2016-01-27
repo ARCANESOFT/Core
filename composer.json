@@ -17,15 +17,14 @@
         "arcanedev/breadcrumbs":  "~2.0",
         "arcanedev/hasher":       "~1.0",
         "arcanedev/laravel-html": "~5.0",
-        "arcanedev/notify":       "^3.1.0",
-        "arcanedev/seo-helper":   "~0.17",
+        "arcanedev/notify":       "~3.0",
+        "arcanedev/seo-helper":   "~0.18",
         "arcanedev/support":      "~3.0",
         "arcanesoft/contracts":   "~1.0",
         "arcanesoft/settings":    "~0.1"
     },
     "require-dev": {
-        "orchestra/testbench":    "~3.1.0",
-        "phpunit/phpcov":         "~2.0",
+        "phpunit/phpcov":         "~2.0|~3.0",
         "phpunit/phpunit":        "~4.0|~5.0"
     },
     "autoload": {
@@ -38,6 +37,9 @@
         "psr-4": {
             "Arcanesoft\\Core\\Tests\\": "tests/"
         }
+    },
+    "scripts": {
+        "testbench": "composer require --dev \"orchestra/testbench=~3.1.0\""
     },
     "extra": {
         "branch-alias": {
