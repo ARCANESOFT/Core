@@ -35,10 +35,26 @@ abstract class PackageServiceProvider extends ServiceProvider
         return str_slug($this->vendor . ' ' .$this->package, '.');
     }
 
-    /* ------------------------------------------------------------------------------------------------
-     |  Sidebar Functions
-     | ------------------------------------------------------------------------------------------------
+    /**
+     * Get the config repository instance.
+     *
+     * @return \Illuminate\Contracts\Config\Repository
      */
+    protected function config()
+    {
+        return $this->app['config'];
+    }
+
+    /**
+     * Get the filesystem instance.
+     *
+     * @return \Illuminate\Filesystem\Filesystem
+     */
+    protected function filesystem()
+    {
+        return $this->app['files'];
+    }
+
     /**
      * Get the sidebar folder.
      *
@@ -59,16 +75,30 @@ abstract class PackageServiceProvider extends ServiceProvider
         return "$this->vendor.sidebar.$this->package";
     }
 
-    /**
-     * Register all the sidebar config files.
+    /* ------------------------------------------------------------------------------------------------
+     |  Package Functions
+     | ------------------------------------------------------------------------------------------------
      */
-    protected function registerSidebarItems()
+    /**
+     * Publish all the package files.
+     *
+     * @param  bool  $load
+     */
+    protected function publishAll($load = true)
     {
-        $paths = $this->filesystem()->glob($this->getSidebarFolder() . DS . '*.php');
+        parent::publishAll($load);
 
-        foreach ($paths as $path) {
-            $this->mergeConfigFrom($path, $this->getSidebarKey() . '.' . basename($path, '.php'));
-        }
+        $this->publishSidebarItems();
+    }
+
+    /**
+     * Publish the config file.
+     */
+    protected function publishConfig()
+    {
+        $this->publishes([
+            $this->getConfigFile() => config_path("{$this->vendor}/{$this->package}.php"),
+        ], 'config');
     }
 
     /**
@@ -81,27 +111,13 @@ abstract class PackageServiceProvider extends ServiceProvider
         ], 'sidebar');
     }
 
-    /* ------------------------------------------------------------------------------------------------
-     |  Other Functions
-     | ------------------------------------------------------------------------------------------------
-     */
     /**
-     * Get the config repository instance.
-     *
-     * @return \Illuminate\Contracts\Config\Repository
+     * Register all the sidebar config files.
      */
-    protected function config()
+    protected function registerSidebarItems()
     {
-        return $this->app['config'];
-    }
-
-    /**
-     * Get the filesystem instance.
-     *
-     * @return \Illuminate\Filesystem\Filesystem
-     */
-    protected function filesystem()
-    {
-        return $this->app['files'];
+        foreach ($this->filesystem()->glob($this->getSidebarFolder() . DS . '*.php') as $path) {
+            $this->mergeConfigFrom($path, $this->getSidebarKey() . '.' . basename($path, '.php'));
+        }
     }
 }
