@@ -47,8 +47,8 @@ If you discover any security related issues, please email arcanedev.maroc@gmail.
 [link-github-repo]:   https://github.com/ARCANESOFT/Core
 [link-github-issues]: https://github.com/ARCANESOFT/Core/issues
 [link-contributors]:  https://github.com/ARCANESOFT/Core/graphs/contributors
-[link-packagist]:     https://packagist.org/packages/arcanedev/core
+[link-packagist]:     https://packagist.org/packages/arcanesoft/core
 [link-travis]:        https://travis-ci.org/ARCANESOFT/Core
-[link-hhvm]:          http://hhvm.h4cc.de/package/arcanedev/core
+[link-hhvm]:          http://hhvm.h4cc.de/package/arcanesoft/core
 [link-scrutinizer]:   https://scrutinizer-ci.com/g/ARCANESOFT/Core/?branch=master
 [link-insight]:       https://insight.sensiolabs.com/projects/ed5a48b5-5be8-41f2-bd69-401d429bb031
