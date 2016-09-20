@@ -13,9 +13,9 @@
     "type":    "library",
     "license": "MIT",
     "require": {
-        "php":                    ">=5.5.9",
+        "php":                    ">=5.6.4",
         "arcanedev/breadcrumbs":  "~2.0",
-        "arcanedev/hasher":       "~1.0",
+        "arcanedev/hasher":       "~2.0",
         "arcanedev/laravel-html": "~5.0",
         "arcanedev/notify":       "~3.0",
         "arcanedev/seo-helper":   "~0.18",
@@ -39,7 +39,7 @@
         }
     },
     "scripts": {
-        "testbench": "composer require --dev \"orchestra/testbench=~3.1.0\""
+        "testbench": "composer require --dev \"orchestra/testbench=~3.3.0\""
     },
     "extra": {
         "branch-alias": {
