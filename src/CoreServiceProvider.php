@@ -19,7 +19,7 @@ class CoreServiceProvider extends PackageServiceProvider
      *
      * @var string
      */
-    protected $package      = 'core';
+    protected $package = 'core';
 
     /* ------------------------------------------------------------------------------------------------
      |  Getters & Setters
@@ -44,7 +44,9 @@ class CoreServiceProvider extends PackageServiceProvider
      */
     public function register()
     {
+        $this->registerConfig();
         $this->registerArcanesoftDatabase();
+
         $this->app->register(Providers\HelpersServiceProvider::class);
         $this->app->register(Providers\PackagesServiceProvider::class);
     }
@@ -54,6 +56,8 @@ class CoreServiceProvider extends PackageServiceProvider
      */
     public function boot()
     {
+        parent::boot();
+
         $this->app->register(Providers\RouteServiceProvider::class);
     }
 
