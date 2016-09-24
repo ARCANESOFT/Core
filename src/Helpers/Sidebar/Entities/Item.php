@@ -1,6 +1,7 @@
 <?php namespace Arcanesoft\Core\Helpers\Sidebar\Entities;
 
 use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Support\Arr;
 
 /**
  * Class     Item
@@ -48,6 +49,13 @@ class Item implements Arrayable
      * @var bool
      */
     public $active = false;
+
+    /**
+     * The authenticated user.
+     *
+     * @var \Arcanesoft\Contracts\Auth\Models\User
+     */
+    protected $user;
 
     /**
      * The item roles.
@@ -112,6 +120,30 @@ class Item implements Arrayable
     }
 
     /**
+     * Set the authenticated user.
+     *
+     * @param  \Arcanesoft\Contracts\Auth\Models\User  $user
+     *
+     * @return self
+     */
+    public function setUser($user)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get the roles.
+     *
+     * @return array
+     */
+    public function getRoles()
+    {
+        return $this->roles;
+    }
+
+    /**
      * Set the roles.
      *
      * @param  array  $roles
@@ -123,6 +155,16 @@ class Item implements Arrayable
         $this->roles = $roles;
 
         return $this;
+    }
+
+    /**
+     * Get the permissions.
+     *
+     * @return array
+     */
+    public function getPermissions()
+    {
+        return $this->permissions;
     }
 
     /**
@@ -189,18 +231,19 @@ class Item implements Arrayable
      *
      * @return self
      */
-    public static function makeFromArray(array $array)
+    public static function makeFromArray(array $array, $user)
     {
         $item = self::make(
             $array['name'],
             $array['title'],
             self::getUrlFromArray($array),
-            array_get($array, 'icon', null)
+            Arr::get($array, 'icon', null)
         );
 
-        $item->setRoles(array_get($array, 'roles', []));
-        $item->setPermissions(array_get($array, 'permissions', []));
-        $item->addChildren(array_get($array, 'children', []));
+        $item->setUser($user);
+        $item->setRoles(Arr::get($array, 'roles', []));
+        $item->setPermissions(Arr::get($array, 'permissions', []));
+        $item->addChildren(Arr::get($array, 'children', []));
 
         return $item;
     }
@@ -214,11 +257,9 @@ class Item implements Arrayable
      */
     private static function getUrlFromArray(array $array)
     {
-        if (array_has($array, 'route')) {
-            return route(array_get($array, 'route'));
-        }
-
-        return array_get($array, 'url', '#');
+        return Arr::has($array, 'route')
+            ? route(Arr::get($array, 'route'))
+            : Arr::get($array, 'url', '#');
     }
 
     /**
@@ -231,9 +272,10 @@ class Item implements Arrayable
     private function addChildren(array $children)
     {
         foreach ($children as $child) {
-            $item = self::makeFromArray($child);
+            $item = self::makeFromArray($child, $this->user);
 
-            $this->children->push($item);
+            if ($item->allowed())
+                $this->children->push($item);
         }
 
         return $this;
@@ -263,6 +305,34 @@ class Item implements Arrayable
         return ! $this->children->isEmpty();
     }
 
+    /**
+     * Check the user is allowed to see this item.
+     *
+     * @return bool
+     */
+    public function allowed()
+    {
+        if ($this->user->isAdmin())
+            return true;
+
+        if (empty($this->roles) && empty($this->permissions))
+            return true;
+
+        foreach ($this->roles as $roleSlug) {
+            if ($this->user->hasRoleSlug($roleSlug)) return true;
+        }
+
+        foreach ($this->permissions as $permissionSlug) {
+            if ($this->user->may($permissionSlug))   return true;
+        }
+
+        return false;
+    }
+
+    /* ------------------------------------------------------------------------------------------------
+     |  Other Functions
+     | ------------------------------------------------------------------------------------------------
+     */
     /**
      * Get the instance as an array.
      *
