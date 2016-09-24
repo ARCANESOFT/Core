@@ -2,7 +2,6 @@
 
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Contracts\Auth\Factory as Auth;
 
 /**
  * Class     AdminMiddleware
@@ -12,31 +11,6 @@ use Illuminate\Contracts\Auth\Factory as Auth;
  */
 class CheckAdministrators
 {
-    /* ------------------------------------------------------------------------------------------------
-     |  Properties
-     | ------------------------------------------------------------------------------------------------
-     */
-    /**
-     * The authentication factory instance.
-     *
-     * @var \Illuminate\Contracts\Auth\Factory
-     */
-    protected $auth;
-
-    /* ------------------------------------------------------------------------------------------------
-     |  Constructor
-     | ------------------------------------------------------------------------------------------------
-     */
-    /**
-     * Create a new middleware instance.
-     *
-     * @param  \Illuminate\Contracts\Auth\Factory  $auth
-     */
-    public function __construct(Auth $auth)
-    {
-        $this->auth = $auth;
-    }
-
     /* ------------------------------------------------------------------------------------------------
      |  Main Functions
      | ------------------------------------------------------------------------------------------------
@@ -52,11 +26,28 @@ class CheckAdministrators
     public function handle(Request $request, Closure $next)
     {
         /** @var  \Arcanesoft\Contracts\Auth\Models\User  $user */
-        $user = $this->auth->guard()->user();
+        $user = auth()->user();
 
-        if (is_null($user) || ! $user->isAdmin())
+        if (is_null($user) || ! $this->isAllowed($user)) {
             abort(404, "You're not allowed !");
+        }
 
         return $next($request);
+    }
+
+    /* ------------------------------------------------------------------------------------------------
+     |  Other Functions
+     | ------------------------------------------------------------------------------------------------
+     */
+    /**
+     * Check if the user is allowed.
+     *
+     * @param  \Arcanesoft\Contracts\Auth\Models\User  $user
+     *
+     * @return bool
+     */
+    private function isAllowed($user)
+    {
+        return $user->isAdmin() || $user->isModerator();
     }
 }
