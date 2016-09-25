@@ -36,12 +36,20 @@ class Manager implements Contracts\Sidebar
      */
     protected $items;
 
+    /**
+     * The authenticated user.
+     *
+     * @var \Arcanesoft\Contracts\Auth\Models\User
+     */
+    protected $user;
+
     /* ------------------------------------------------------------------------------------------------
      |  Constructor
      | ------------------------------------------------------------------------------------------------
      */
     public function __construct()
     {
+        $this->user  = auth()->user()->load(['roles', 'roles.permissions']);
         $this->items = new ItemCollection;
     }
 
@@ -143,9 +151,10 @@ class Manager implements Contracts\Sidebar
      */
     public function add(array $array)
     {
-        $item = Item::makeFromArray($array);
+        $item = Item::makeFromArray($array, $this->user);
 
-        $this->items->push($item);
+        if ($item->allowed())
+            $this->items->push($item);
 
         return $this;
     }
