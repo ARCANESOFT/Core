@@ -1,7 +1,6 @@
 # Core [![Packagist License][badge_license]](LICENSE.md) [![For ARCANESOFT CMS][badge_arcanesoft]][link-arcanesoft]
 
 [![Travis Status][badge_build]][link-travis]
-[![HHVM Status][badge_hhvm]][link-hhvm]
 [![Coverage Status][badge_coverage]][link-scrutinizer]
 [![Scrutinizer Code Quality][badge_quality]][link-scrutinizer]
 [![SensioLabs Insight][badge_insight]][link-insight]
@@ -33,7 +32,6 @@ If you discover any security related issues, please email arcanedev.maroc@gmail.
 [badge_license]:      http://img.shields.io/packagist/l/arcanesoft/core.svg?style=flat-square
 [badge_arcanesoft]:   https://img.shields.io/badge/For-ARCANESOFT%20CMS-orange.svg?style=flat-square
 [badge_build]:        http://img.shields.io/travis/ARCANESOFT/Core.svg?style=flat-square
-[badge_hhvm]:         https://img.shields.io/hhvm/arcanesoft/core.svg?style=flat-square
 [badge_coverage]:     https://img.shields.io/scrutinizer/coverage/g/ARCANESOFT/Core.svg?style=flat-square
 [badge_quality]:      https://img.shields.io/scrutinizer/g/ARCANESOFT/Core.svg?style=flat-square
 [badge_insight]:      https://img.shields.io/sensiolabs/i/ed5a48b5-5be8-41f2-bd69-401d429bb031.svg?style=flat-square
@@ -49,6 +47,5 @@ If you discover any security related issues, please email arcanedev.maroc@gmail.
 [link-contributors]:  https://github.com/ARCANESOFT/Core/graphs/contributors
 [link-packagist]:     https://packagist.org/packages/arcanesoft/core
 [link-travis]:        https://travis-ci.org/ARCANESOFT/Core
-[link-hhvm]:          http://hhvm.h4cc.de/package/arcanesoft/core
 [link-scrutinizer]:   https://scrutinizer-ci.com/g/ARCANESOFT/Core/?branch=master
 [link-insight]:       https://insight.sensiolabs.com/projects/ed5a48b5-5be8-41f2-bd69-401d429bb031
