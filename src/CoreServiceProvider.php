@@ -59,6 +59,7 @@ class CoreServiceProvider extends PackageServiceProvider
         parent::boot();
 
         $this->app->register(Providers\RouteServiceProvider::class);
+        $this->publishTranslations();
     }
 
     /**
@@ -82,10 +83,11 @@ class CoreServiceProvider extends PackageServiceProvider
      */
     private function registerArcanesoftDatabase()
     {
-        $this->config()->set('database.connections.arcanesoft', [
-            'driver'   => 'sqlite',
-            'database' => storage_path('app/arcanesoft.sqlite'),
-            'prefix'   => '',
-        ]);
+        $connection = $this->config()->get('core.database.default', 'sqlite');
+
+        $this->config()->set(
+            'database.connections.arcanesoft',
+            $this->config()->get("core.database.connections.{$connection}")
+        );
     }
 }
