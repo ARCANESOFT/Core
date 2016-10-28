@@ -1,11 +1,15 @@
 <?php
 
 return [
-    'add'        => 'Ajouter',
-    'edit'       => 'Modifier',
-    'update'     => 'Mettre à jour',
-    'delete'     => 'Supprimer',
-    'restore'    => 'Restaurer',
     'activate'   => 'Activer',
+    'add'        => 'Ajouter',
+    'attach'     => 'Attacher',
+    'cancel'     => 'Annuler',
     'deactivate' => 'Désactiver',
+    'delete'     => 'Supprimer',
+    'detach'     => 'Détacher',
+    'edit'       => 'Modifier',
+    'restore'    => 'Restaurer',
+    'show'       => 'Afficher',
+    'update'     => 'Mettre à jour',
 ];
