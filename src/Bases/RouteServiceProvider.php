@@ -1,6 +1,7 @@
 <?php namespace Arcanesoft\Core\Bases;
 
 use Arcanedev\Support\Providers\RouteServiceProvider as ServiceProvider;
+use Illuminate\Support\Arr;
 
 /**
  * Class     RouteServiceProvider
@@ -31,7 +32,7 @@ abstract class RouteServiceProvider extends ServiceProvider
      */
     protected function getFoundationPrefix()
     {
-        return array_get($this->getFoundationRouteGroup(), 'prefix', 'dashboard');
+        return Arr::get($this->getFoundationRouteGroup(), 'prefix', 'dashboard');
     }
 
     /* ------------------------------------------------------------------------------------------------

@@ -1,6 +1,7 @@
 <?php namespace Arcanesoft\Core\Bases;
 
 use Arcanedev\Support\PackageServiceProvider as ServiceProvider;
+use Illuminate\Support\Str;
 
 /**
  * Class     PackageServiceProvider
@@ -32,27 +33,7 @@ abstract class PackageServiceProvider extends ServiceProvider
      */
     protected function getConfigKey()
     {
-        return str_slug($this->vendor . ' ' .$this->package, '.');
-    }
-
-    /**
-     * Get the config repository instance.
-     *
-     * @return \Illuminate\Contracts\Config\Repository
-     */
-    protected function config()
-    {
-        return $this->app['config'];
-    }
-
-    /**
-     * Get the filesystem instance.
-     *
-     * @return \Illuminate\Filesystem\Filesystem
-     */
-    protected function filesystem()
-    {
-        return $this->app['files'];
+        return Str::slug("{$this->vendor} {$this->package}", '.');
     }
 
     /**
@@ -72,7 +53,7 @@ abstract class PackageServiceProvider extends ServiceProvider
      */
     protected function getSidebarKey()
     {
-        return "$this->vendor.sidebar.$this->package";
+        return "{$this->vendor}.sidebar.{$this->package}";
     }
 
     /* ------------------------------------------------------------------------------------------------
@@ -117,7 +98,7 @@ abstract class PackageServiceProvider extends ServiceProvider
     protected function registerSidebarItems()
     {
         foreach ($this->filesystem()->glob($this->getSidebarFolder() . DS . '*.php') as $path) {
-            $this->mergeConfigFrom($path, $this->getSidebarKey() . '.' . basename($path, '.php'));
+            $this->mergeConfigFrom($path, $this->getSidebarKey().'.'.basename($path, '.php'));
         }
     }
 }

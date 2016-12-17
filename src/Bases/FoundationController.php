@@ -61,7 +61,7 @@ abstract class FoundationController extends Controller
     {
         return [
             'title' => trans('foundation::generals.home'),
-            'url'   => route('foundation::home'),
+            'url'   => route('admin::foundation.home'),
         ];
     }
 
