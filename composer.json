@@ -19,13 +19,13 @@
         "arcanedev/laravel-html": "~5.0",
         "arcanedev/notify":       "~3.0",
         "arcanedev/seo-helper":   "~1.0",
-        "arcanedev/support":      "~3.0",
+        "arcanedev/support":      "~3.20",
         "arcanesoft/contracts":   "~1.0",
         "arcanesoft/settings":    "~0.1"
     },
     "require-dev": {
-        "phpunit/phpcov":         "~2.0|~3.0",
-        "phpunit/phpunit":        "~4.0|~5.0"
+        "phpunit/phpcov":  "~2.0|~3.0",
+        "phpunit/phpunit": "~4.0|~5.0"
     },
     "autoload": {
         "psr-4": {
