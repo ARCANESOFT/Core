@@ -1,14 +1,12 @@
 <?php namespace Arcanesoft\Core\Bases;
 
 /**
- * Class     FoundationController
+ * Class     AdminController
  *
- * @package  Arcanesoft\Foundation\Bases
+ * @package  Arcanesoft\Core\Bases
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
- *
- * @deprecated Use AdminController instead
  */
-abstract class FoundationController extends AdminController
+abstract class AdminController extends Controller
 {
     /* ------------------------------------------------------------------------------------------------
      |  Properties
@@ -62,7 +60,7 @@ abstract class FoundationController extends AdminController
     protected function getBreadcrumbsHomeItem()
     {
         return [
-            'title' => trans('foundation::generals.home'),
+            'title' => trans('core::generals.home'),
             'url'   => route('admin::foundation.home'),
         ];
     }
@@ -81,9 +79,7 @@ abstract class FoundationController extends AdminController
      */
     protected function view($name, array $data = [])
     {
-        if ( ! is_null($this->viewNamespace)) {
-            $name = "{$this->viewNamespace}::$name";
-        }
+        $name = is_null($this->viewNamespace) ? $name : "{$this->viewNamespace}::$name";
 
         return parent::view($name, $data);
     }
