@@ -59,6 +59,7 @@ class CoreServiceProvider extends PackageServiceProvider
         parent::boot();
 
         $this->app->register(Providers\RouteServiceProvider::class);
+
         $this->publishTranslations();
     }
 

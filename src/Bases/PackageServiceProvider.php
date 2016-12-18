@@ -43,7 +43,7 @@ abstract class PackageServiceProvider extends ServiceProvider
      */
     protected function getSidebarFolder()
     {
-        return $this->getConfigFolder() . DS . 'sidebar';
+        return $this->getConfigFolder().DS.'sidebar';
     }
 
     /**

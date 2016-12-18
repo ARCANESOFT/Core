@@ -8,6 +8,8 @@ use Illuminate\Support\Arr;
  *
  * @package  Arcanesoft\Support\Providers
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
+ *
+ * @todo: Remove deprecated functions
  */
 abstract class RouteServiceProvider extends ServiceProvider
 {
@@ -20,7 +22,7 @@ abstract class RouteServiceProvider extends ServiceProvider
      *
      * @return array
      */
-    protected function getFoundationRouteGroup()
+    protected function getAdminRouteGroup()
     {
         return $this->config()->get('arcanesoft.foundation.route', []);
     }
@@ -30,7 +32,7 @@ abstract class RouteServiceProvider extends ServiceProvider
      *
      * @return string
      */
-    protected function getFoundationPrefix()
+    protected function getAdminPrefix()
     {
         return Arr::get($this->getFoundationRouteGroup(), 'prefix', 'dashboard');
     }
@@ -47,5 +49,33 @@ abstract class RouteServiceProvider extends ServiceProvider
     protected function config()
     {
         return $this->app['config'];
+    }
+
+    /* ------------------------------------------------------------------------------------------------
+     |  Deprecated Functions
+     | ------------------------------------------------------------------------------------------------
+     */
+    /**
+     * Get Foundation route group.
+     *
+     * @deprecated
+     *
+     * @return array
+     */
+    protected function getFoundationRouteGroup()
+    {
+        return $this->getAdminRouteGroup();
+    }
+
+    /**
+     * Get Foundation route prefix.
+     *
+     * @deprecated
+     *
+     * @return string
+     */
+    protected function getFoundationPrefix()
+    {
+        return $this->getAdminPrefix();
     }
 }
