@@ -44,7 +44,7 @@ class PackagesServiceProvider extends ServiceProvider
      */
     private function registerSettingsPackage()
     {
-        $this->app->register(Settings\SettingsServiceProvider::class);
+        $this->registerProvider(Settings\SettingsServiceProvider::class);
         $this->alias('Settings', Settings\Facades\Settings::class);
     }
 
@@ -53,7 +53,7 @@ class PackagesServiceProvider extends ServiceProvider
      */
     private function registerHasherPackage()
     {
-        $this->app->register(Hasher\HasherServiceProvider::class);
+        $this->registerProvider(Hasher\HasherServiceProvider::class);
         $this->alias('Hasher', Hasher\Facades\Hasher::class);
     }
 
@@ -62,7 +62,7 @@ class PackagesServiceProvider extends ServiceProvider
      */
     private function registerLaravelHtmlPackage()
     {
-        $this->app->register(LaravelHtml\HtmlServiceProvider::class);
+        $this->registerProvider(LaravelHtml\HtmlServiceProvider::class);
         $this->alias('Html', LaravelHtml\Facades\Html::class);
         $this->alias('Form', LaravelHtml\Facades\Form::class);
     }
@@ -72,7 +72,7 @@ class PackagesServiceProvider extends ServiceProvider
      */
     private function registerSeoHelperPackage()
     {
-        $this->app->register(SeoHelper\SeoHelperServiceProvider::class);
+        $this->registerProvider(SeoHelper\SeoHelperServiceProvider::class);
         $this->alias('SeoHelper', SeoHelper\Facades\SeoHelper::class);
     }
 
@@ -81,7 +81,7 @@ class PackagesServiceProvider extends ServiceProvider
      */
     private function registerBreadcrumbsPackage()
     {
-        $this->app->register(Breadcrumbs\BreadcrumbsServiceProvider::class);
+        $this->registerProvider(Breadcrumbs\BreadcrumbsServiceProvider::class);
         $this->alias('Breadcrumbs', Breadcrumbs\Facades\Breadcrumbs::class);
     }
 
@@ -90,7 +90,7 @@ class PackagesServiceProvider extends ServiceProvider
      */
     private function registerNotifyPackage()
     {
-        $this->app->register(Notify\NotifyServiceProvider::class);
+        $this->registerProvider(Notify\NotifyServiceProvider::class);
         $this->alias('Notify', Notify\Facades\Notify::class);
     }
 }

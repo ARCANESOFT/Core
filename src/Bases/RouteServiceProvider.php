@@ -34,7 +34,7 @@ abstract class RouteServiceProvider extends ServiceProvider
      */
     protected function getAdminPrefix()
     {
-        return Arr::get($this->getFoundationRouteGroup(), 'prefix', 'dashboard');
+        return Arr::get($this->getAdminRouteGroup(), 'prefix', 'dashboard');
     }
 
     /* ------------------------------------------------------------------------------------------------

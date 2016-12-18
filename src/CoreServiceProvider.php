@@ -46,9 +46,10 @@ class CoreServiceProvider extends PackageServiceProvider
     {
         $this->registerConfig();
         $this->registerArcanesoftDatabase();
-
-        $this->app->register(Providers\HelpersServiceProvider::class);
-        $this->app->register(Providers\PackagesServiceProvider::class);
+        $this->registerProviders([
+            Providers\HelpersServiceProvider::class,
+            Providers\PackagesServiceProvider::class,
+        ]);
     }
 
     /**
@@ -58,7 +59,7 @@ class CoreServiceProvider extends PackageServiceProvider
     {
         parent::boot();
 
-        $this->app->register(Providers\RouteServiceProvider::class);
+        $this->registerProvider(Providers\RouteServiceProvider::class);
 
         $this->publishTranslations();
     }
