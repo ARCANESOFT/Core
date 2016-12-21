@@ -14,27 +14,71 @@ use Illuminate\Support\Arr;
 abstract class RouteServiceProvider extends ServiceProvider
 {
     /* ------------------------------------------------------------------------------------------------
-     |  Getters & Setters
+     |  Main Functions
      | ------------------------------------------------------------------------------------------------
      */
     /**
-     * Get Foundation route group.
+     * Get admin attributes.
+     *
+     * @param  string  $name
+     * @param  string  $namespace
+     * @param  string  $uri
+     * @param  array   $middleware
      *
      * @return array
      */
-    protected function getAdminRouteGroup()
+    protected function getAdminAttributes($name, $namespace, $uri = '', array $middleware = [])
     {
-        return $this->config()->get('arcanesoft.foundation.route', []);
+        return [
+            'as'         => $this->prependAdminRouteName($name),
+            'namespace'  => $namespace,
+            'prefix'     => $this->prependAdminPrefixUri($uri),
+            'middleware' => $this->getAdminMiddleware($middleware),
+        ];
     }
 
     /**
-     * Get Foundation route prefix.
+     * Prepend admin route name.
+     *
+     * @param  string  $name
      *
      * @return string
      */
-    protected function getAdminPrefix()
+    protected function prependAdminRouteName($name)
     {
-        return Arr::get($this->getAdminRouteGroup(), 'prefix', 'dashboard');
+        return $this->config()->get('arcanesoft.core.admin.route', 'admin::') . $name;
+    }
+
+    /**
+     * Prepend admin uri.
+     *
+     * @param  string  $uri
+     *
+     * @return string
+     */
+    protected function prependAdminPrefixUri($uri = '')
+    {
+        $prefix = $this->config()->get('arcanesoft.core.admin.prefix', 'dashboard');
+
+        return trim("{$prefix}/{$uri}", '/');
+    }
+
+    /**
+     * Get the admin middleware.
+     *
+     * @param  array  $append
+     *
+     * @return array|mixed
+     */
+    protected function getAdminMiddleware(array $append = [])
+    {
+        $middleware = $this->config()->get('arcanesoft.core.admin.middleware', []);
+
+        foreach ($append as $extra) {
+            if ( ! in_array($extra, $middleware)) $middleware[] = $extra;
+        }
+
+        return $middleware;
     }
 
     /* ------------------------------------------------------------------------------------------------
@@ -55,6 +99,30 @@ abstract class RouteServiceProvider extends ServiceProvider
      |  Deprecated Functions
      | ------------------------------------------------------------------------------------------------
      */
+    /**
+     * Get Foundation route group.
+     *
+     * @deprecated
+     *
+     * @return array
+     */
+    protected function getAdminRouteGroup()
+    {
+        return $this->config()->get('arcanesoft.foundation.route', []);
+    }
+
+    /**
+     * Get Foundation route prefix.
+     *
+     * @deprecated
+     *
+     * @return string
+     */
+    protected function getAdminPrefix()
+    {
+        return Arr::get($this->getAdminRouteGroup(), 'prefix', 'dashboard');
+    }
+
     /**
      * Get Foundation route group.
      *
