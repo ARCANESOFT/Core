@@ -7,6 +7,6 @@ if ( ! function_exists('sidebar')) {
      * @return \Arcanesoft\Core\Helpers\Sidebar\Contracts\Sidebar
      */
     function sidebar() {
-        return app(\Arcanesoft\Core\Helpers\Sidebar\Contracts\Sidebar::class);
+        return app(Arcanesoft\Core\Helpers\Sidebar\Contracts\Sidebar::class);
     }
 }

@@ -85,6 +85,7 @@ class CoreServiceProvider extends PackageServiceProvider
      */
     private function registerArcanesoftDatabase()
     {
+        // Keep it or using a real DBMS ?
         $connection = $this->config()->get('core.database.default', 'sqlite');
 
         $this->config()->set(
