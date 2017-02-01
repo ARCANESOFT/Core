@@ -1,4 +1,4 @@
-<?php namespace Arcanesoft\Core\Bases;
+<?php namespace Arcanesoft\Core\Http\Controllers;
 
 /**
  * Class     FoundationController

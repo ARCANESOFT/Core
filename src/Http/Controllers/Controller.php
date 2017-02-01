@@ -1,4 +1,4 @@
-<?php namespace Arcanesoft\Core\Bases;
+<?php namespace Arcanesoft\Core\Http\Controllers;
 
 use Arcanedev\Support\Bases\Controller as BaseController;
 
