@@ -88,7 +88,7 @@ abstract class PackageServiceProvider extends ServiceProvider
     protected function publishSidebarItems()
     {
         $this->publishes([
-            $this->getSidebarFolder() => config_path($this->vendor . DS . 'sidebar' . DS . $this->package)
+            $this->getSidebarFolder() => config_path($this->vendor.DS.'sidebar'.DS.$this->package)
         ], 'sidebar');
     }
 
@@ -97,7 +97,7 @@ abstract class PackageServiceProvider extends ServiceProvider
      */
     protected function registerSidebarItems()
     {
-        foreach ($this->filesystem()->glob($this->getSidebarFolder() . DS . '*.php') as $path) {
+        foreach ($this->filesystem()->glob($this->getSidebarFolder().DS.'*.php') as $path) {
             $this->mergeConfigFrom($path, $this->getSidebarKey().'.'.basename($path, '.php'));
         }
     }

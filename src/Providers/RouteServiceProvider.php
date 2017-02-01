@@ -23,6 +23,6 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function map(Router $router)
     {
-        $this->middleware('admin', Middleware\CheckAdministrators::class);
+        $this->aliasMiddleware('admin', Middleware\CheckAdministrators::class);
     }
 }

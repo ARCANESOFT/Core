@@ -29,7 +29,6 @@ class HelpersServiceProvider extends ServiceProvider
     public function provides()
     {
         return [
-            'arcanesoft.helpers.sidebar',
             Helpers\Sidebar\Contracts\Sidebar::class,
         ];
     }
@@ -44,6 +43,5 @@ class HelpersServiceProvider extends ServiceProvider
     private function registerSidebarHelper()
     {
         $this->singleton(Helpers\Sidebar\Contracts\Sidebar::class, Helpers\Sidebar\Manager::class);
-        $this->singleton('arcanesoft.helpers.sidebar', Helpers\Sidebar\Contracts\Sidebar::class);
     }
 }

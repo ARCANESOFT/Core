@@ -17,6 +17,8 @@ abstract class RouteServiceProvider extends ServiceProvider
     /**
      * Get admin attributes.
      *
+     * @todo: Refactor this code with a method like `adminGroup()`
+     *
      * @param  string  $name
      * @param  string  $namespace
      * @param  string  $uri
