@@ -44,6 +44,8 @@ class CoreServiceProvider extends PackageServiceProvider
      */
     public function register()
     {
+        parent::register();
+
         $this->registerConfig();
         $this->registerArcanesoftDatabase();
         $this->registerProviders([
@@ -80,6 +82,14 @@ class CoreServiceProvider extends PackageServiceProvider
      |  Services Functions
      | ------------------------------------------------------------------------------------------------
      */
+    /**
+     * Register the Core service provider.
+     */
+    protected function registerCoreServiceProvider()
+    {
+        // Skip the core service provider registration (self).
+    }
+
     /**
      * Register Foundation database.
      */

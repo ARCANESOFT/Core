@@ -1,6 +1,7 @@
 <?php namespace Arcanesoft\Core\Bases;
 
 use Arcanedev\Support\PackageServiceProvider as ServiceProvider;
+use Arcanesoft\Core\CoreServiceProvider;
 use Illuminate\Support\Str;
 
 /**
@@ -54,6 +55,28 @@ abstract class PackageServiceProvider extends ServiceProvider
     protected function getSidebarKey()
     {
         return "{$this->vendor}.sidebar.{$this->package}";
+    }
+
+    /* ------------------------------------------------------------------------------------------------
+     |  Main Functions
+     | ------------------------------------------------------------------------------------------------
+     */
+    /**
+     * Register the service provider.
+     */
+    public function register()
+    {
+        parent::register();
+
+        $this->registerCoreServiceProvider();
+    }
+
+    /**
+     * Register the Core service provider.
+     */
+    protected function registerCoreServiceProvider()
+    {
+        $this->registerProvider(CoreServiceProvider::class);
     }
 
     /* ------------------------------------------------------------------------------------------------
