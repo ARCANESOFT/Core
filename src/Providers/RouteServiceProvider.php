@@ -12,9 +12,24 @@ use Illuminate\Contracts\Routing\Registrar as Router;
  */
 class RouteServiceProvider extends ServiceProvider
 {
-    /* ------------------------------------------------------------------------------------------------
-     |  Main Functions
-     | ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
+     |  Properties
+     | -----------------------------------------------------------------
+     */
+    /**
+     * The application's route middleware.
+     *
+     * These middleware may be assigned to groups or used individually.
+     *
+     * @var array
+     */
+    protected $routeMiddleware = [
+        'admin' => Middleware\CheckAdministrators::class,
+    ];
+
+    /* -----------------------------------------------------------------
+     |  Main Methods
+     | -----------------------------------------------------------------
      */
     /**
      * Define the routes for the application.
@@ -23,6 +38,6 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function map(Router $router)
     {
-        $this->aliasMiddleware('admin', Middleware\CheckAdministrators::class);
+        //
     }
 }
