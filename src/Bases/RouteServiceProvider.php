@@ -1,6 +1,7 @@
 <?php namespace Arcanesoft\Core\Bases;
 
 use Arcanedev\Support\Providers\RouteServiceProvider as ServiceProvider;
+use Illuminate\Support\Arr;
 
 /**
  * Class     RouteServiceProvider
@@ -10,14 +11,59 @@ use Arcanedev\Support\Providers\RouteServiceProvider as ServiceProvider;
  */
 abstract class RouteServiceProvider extends ServiceProvider
 {
-    /* ------------------------------------------------------------------------------------------------
-     |  Main Functions
-     | ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
+     |  Properties
+     | -----------------------------------------------------------------
+     */
+    /**
+     * The admin controller namespace for the application.
+     *
+     * @var string|null
+     */
+    protected $adminNamespace;
+
+    /* -----------------------------------------------------------------
+     |  Getters & Setters
+     | -----------------------------------------------------------------
+     */
+    /**
+     * Get the config repository instance.
+     *
+     * @return \Illuminate\Contracts\Config\Repository
+     */
+    protected function config()
+    {
+        return $this->app->make('config');
+    }
+
+    /* -----------------------------------------------------------------
+     |  Main Methods
+     | -----------------------------------------------------------------
+     */
+    /**
+     * Group the routes with admin attributes.
+     *
+     * @param  \Closure  $callback
+     */
+    protected function adminGroup(\Closure $callback)
+    {
+        $attributes = $this->config()->get('arcanesoft.core.admin', []);
+
+        $this->prefix(Arr::get($attributes, 'prefix', 'dashboard'))
+             ->name(Arr::get($attributes, 'name', 'admin::'))
+             ->namespace($this->adminNamespace)
+             ->middleware(Arr::get($attributes, 'middleware', ['web', 'auth', 'admin']))
+             ->group($callback);
+    }
+
+    /* -----------------------------------------------------------------
+     |  Deprecated Methods
+     | -----------------------------------------------------------------
      */
     /**
      * Get admin attributes.
      *
-     * @todo: Refactor this code with a method like `adminGroup()`
+     * @deprecated: Use adminGroup(\Closure $callback) instead
      *
      * @param  string  $name
      * @param  string  $namespace
@@ -39,6 +85,8 @@ abstract class RouteServiceProvider extends ServiceProvider
     /**
      * Prepend admin route name.
      *
+     * @deprecated: Use adminGroup(\Closure $callback) instead
+     *
      * @param  string  $name
      *
      * @return string
@@ -50,6 +98,8 @@ abstract class RouteServiceProvider extends ServiceProvider
 
     /**
      * Prepend admin uri.
+     *
+     * @deprecated: Use adminGroup(\Closure $callback) instead
      *
      * @param  string  $uri
      *
@@ -65,6 +115,8 @@ abstract class RouteServiceProvider extends ServiceProvider
     /**
      * Get the admin middleware.
      *
+     * @deprecated: Use adminGroup(\Closure $callback) instead
+     *
      * @param  array  $append
      *
      * @return array|mixed
@@ -78,19 +130,5 @@ abstract class RouteServiceProvider extends ServiceProvider
         }
 
         return $middleware;
-    }
-
-    /* ------------------------------------------------------------------------------------------------
-     |  Other Functions
-     | ------------------------------------------------------------------------------------------------
-     */
-    /**
-     * Get the config repository instance.
-     *
-     * @return \Illuminate\Contracts\Config\Repository
-     */
-    protected function config()
-    {
-        return $this->app['config'];
     }
 }

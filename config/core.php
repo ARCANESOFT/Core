@@ -24,8 +24,10 @@ return [
     'admin' => [
         'prefix'     => 'dashboard',
 
-        'route'      => 'admin::',
+        'name'       => 'admin::',
 
         'middleware' => ['web', 'auth', 'admin'],
+
+        'route'      => 'admin::', // TODO: deprecate this attribute
     ],
 ];
