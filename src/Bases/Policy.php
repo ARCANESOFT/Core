@@ -1,6 +1,5 @@
 <?php namespace Arcanesoft\Core\Bases;
 
-use Arcanesoft\Contracts\Auth\Models\User;
 use Arcanedev\Support\Bases\Policy as BasePolicy;
 
 /**
@@ -11,20 +10,5 @@ use Arcanedev\Support\Bases\Policy as BasePolicy;
  */
 abstract class Policy extends BasePolicy
 {
-    /* ------------------------------------------------------------------------------------------------
-     |  Main Functions
-     | ------------------------------------------------------------------------------------------------
-     */
-    /**
-     * The policy's before filter.
-     *
-     * @param  \Arcanesoft\Contracts\Auth\Models\User  $user
-     * @param  mixed                                   $ability
-     *
-     * @return bool
-     */
-    public function before(User $user, $ability)
-    {
-        if ($user->isAdmin()) return true;
-    }
+    //
 }
