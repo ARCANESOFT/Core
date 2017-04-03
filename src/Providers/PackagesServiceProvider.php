@@ -7,6 +7,7 @@ use Arcanedev\Notify;
 use Arcanedev\SeoHelper;
 use Arcanesoft\Settings;
 use Arcanedev\Support\ServiceProvider;
+use Arcanesoft\Sidebar\SidebarServiceProvider;
 
 /**
  * Class     PackagesServiceProvider
@@ -31,6 +32,7 @@ class PackagesServiceProvider extends ServiceProvider
         $this->registerNotifyPackage();
         $this->registerSeoHelperPackage();
         $this->registerSettingsPackage();
+        $this->registerSidebarPackage();
 
         $this->registerAliases();
     }
@@ -92,5 +94,13 @@ class PackagesServiceProvider extends ServiceProvider
     {
         $this->registerProvider(Notify\NotifyServiceProvider::class);
         $this->alias('Notify', Notify\Facades\Notify::class);
+    }
+
+    /**
+     * Register the Sidebar Package.
+     */
+    private function registerSidebarPackage()
+    {
+        $this->registerProvider(SidebarServiceProvider::class);
     }
 }
