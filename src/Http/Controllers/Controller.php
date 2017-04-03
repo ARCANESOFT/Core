@@ -1,6 +1,10 @@
 <?php namespace Arcanesoft\Core\Http\Controllers;
 
+use Arcanedev\Breadcrumbs\Traits\BreadcrumbsTrait;
+use Arcanedev\SeoHelper\Traits\Seoable;
 use Arcanedev\Support\Bases\Controller as BaseController;
+use Arcanedev\Support\Traits\Templatable;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 /**
  * Class     Controller
@@ -14,10 +18,10 @@ abstract class Controller extends BaseController
      |  Traits
      | ------------------------------------------------------------------------------------------------
      */
-    use \Arcanedev\Breadcrumbs\Traits\BreadcrumbsTrait,
-        \Arcanedev\SeoHelper\Traits\Seoable,
-        \Arcanedev\Support\Traits\Templatable,
-        \Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+    use BreadcrumbsTrait,
+        Seoable,
+        Templatable,
+        AuthorizesRequests;
 
     /* ------------------------------------------------------------------------------------------------
      |  Properties
@@ -26,7 +30,7 @@ abstract class Controller extends BaseController
     /**
      * The view namespace.
      *
-     * @var string
+     * @var string|null
      */
     protected $viewNamespace;
 }

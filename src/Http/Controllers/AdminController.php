@@ -9,17 +9,6 @@
 abstract class AdminController extends Controller
 {
     /* ------------------------------------------------------------------------------------------------
-     |  Properties
-     | ------------------------------------------------------------------------------------------------
-     */
-    /**
-     * The view namespace.
-     *
-     * @var string
-     */
-    protected $viewNamespace = 'foundation';
-
-    /* ------------------------------------------------------------------------------------------------
      |  Constructor
      | ------------------------------------------------------------------------------------------------
      */
@@ -60,7 +49,7 @@ abstract class AdminController extends Controller
     protected function getBreadcrumbsHomeItem()
     {
         return [
-            'title' => trans('core::generals.home'),
+            'title' => trans('core::generals.Home'),
             'url'   => route('admin::foundation.home'),
         ];
     }
