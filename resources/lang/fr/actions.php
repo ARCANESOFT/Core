@@ -1,15 +1,17 @@
 <?php
 
 return [
-    'activate'   => 'Activer',
-    'add'        => 'Ajouter',
-    'attach'     => 'Attacher',
-    'cancel'     => 'Annuler',
-    'deactivate' => 'Désactiver',
-    'delete'     => 'Supprimer',
-    'detach'     => 'Détacher',
-    'edit'       => 'Modifier',
-    'restore'    => 'Restaurer',
-    'show'       => 'Afficher',
-    'update'     => 'Mettre à jour',
+    'activate'   => 'activer',
+    'add'        => 'ajouter',
+    'attach'     => 'attacher',
+    'cancel'     => 'annuler',
+    'deactivate' => 'désactiver',
+    'delete'     => 'supprimer',
+    'detach'     => 'détacher',
+    'disable'    => 'désactiver',
+    'edit'       => 'modifier',
+    'enable'     => 'activer',
+    'restore'    => 'restaurer',
+    'show'       => 'afficher',
+    'update'     => 'mettre à jour',
 ];
