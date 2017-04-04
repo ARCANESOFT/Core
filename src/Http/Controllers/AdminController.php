@@ -49,7 +49,7 @@ abstract class AdminController extends Controller
     protected function getBreadcrumbsHomeItem()
     {
         return [
-            'title' => trans('core::generals.Home'),
+            'title' => trans('core::generals.home'),
             'url'   => route('admin::foundation.home'),
         ];
     }
