@@ -1,12 +1,12 @@
 <?php namespace Arcanesoft\Core\Providers;
 
-use Arcanedev\Breadcrumbs;
-use Arcanedev\Hasher;
-use Arcanedev\LaravelHtml;
-use Arcanedev\Notify;
-use Arcanedev\SeoHelper;
-use Arcanesoft\Settings;
+use Arcanedev\Breadcrumbs\BreadcrumbsServiceProvider;
+use Arcanedev\Hasher\HasherServiceProvider;
+use Arcanedev\LaravelApiHelper\ApiHelperServiceProvider;
+use Arcanedev\LaravelHtml\HtmlServiceProvider;
+use Arcanedev\SeoHelper\SeoHelperServiceProvider;
 use Arcanedev\Support\ServiceProvider;
+use Arcanesoft\Settings\SettingsServiceProvider;
 use Arcanesoft\Sidebar\SidebarServiceProvider;
 
 /**
@@ -17,15 +17,18 @@ use Arcanesoft\Sidebar\SidebarServiceProvider;
  */
 class PackagesServiceProvider extends ServiceProvider
 {
-    /* ------------------------------------------------------------------------------------------------
-     |  Main Functions
-     | ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
+     |  Main Methods
+     | -----------------------------------------------------------------
      */
     /**
      * {@inheritdoc}
      */
     public function register()
     {
+        parent::register();
+
+        $this->registerLaravelApiHelperPackage();
         $this->registerBreadcrumbsPackage();
         $this->registerHasherPackage();
         $this->registerLaravelHtmlPackage();
@@ -37,17 +40,26 @@ class PackagesServiceProvider extends ServiceProvider
         $this->registerAliases();
     }
 
-    /* ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
      |  Packages
-     | ------------------------------------------------------------------------------------------------
+     | -----------------------------------------------------------------
      */
+    /**
+     * Register the API Helper Package.
+     */
+    private function registerLaravelApiHelperPackage()
+    {
+        $this->registerProvider(ApiHelperServiceProvider::class);
+    }
+
     /**
      * Register the Settings Package.
      */
     private function registerSettingsPackage()
     {
-        $this->registerProvider(Settings\SettingsServiceProvider::class);
-        $this->alias('Settings', Settings\Facades\Settings::class);
+        $this->registerProvider(SettingsServiceProvider::class);
+
+        $this->alias('Settings', \Arcanesoft\Settings\Facades\Settings::class);
     }
 
     /**
@@ -55,8 +67,9 @@ class PackagesServiceProvider extends ServiceProvider
      */
     private function registerHasherPackage()
     {
-        $this->registerProvider(Hasher\HasherServiceProvider::class);
-        $this->alias('Hasher', Hasher\Facades\Hasher::class);
+        $this->registerProvider(HasherServiceProvider::class);
+
+        $this->alias('Hasher', \Arcanedev\Hasher\Facades\Hasher::class);
     }
 
     /**
@@ -64,9 +77,10 @@ class PackagesServiceProvider extends ServiceProvider
      */
     private function registerLaravelHtmlPackage()
     {
-        $this->registerProvider(LaravelHtml\HtmlServiceProvider::class);
-        $this->alias('Html', LaravelHtml\Facades\Html::class);
-        $this->alias('Form', LaravelHtml\Facades\Form::class);
+        $this->registerProvider(HtmlServiceProvider::class);
+
+        $this->alias('Html', \Arcanedev\LaravelHtml\Facades\Html::class);
+        $this->alias('Form', \Arcanedev\LaravelHtml\Facades\Form::class);
     }
 
     /**
@@ -74,8 +88,9 @@ class PackagesServiceProvider extends ServiceProvider
      */
     private function registerSeoHelperPackage()
     {
-        $this->registerProvider(SeoHelper\SeoHelperServiceProvider::class);
-        $this->alias('SeoHelper', SeoHelper\Facades\SeoHelper::class);
+        $this->registerProvider(SeoHelperServiceProvider::class);
+
+        $this->alias('SeoHelper', \Arcanedev\SeoHelper\Facades\SeoHelper::class);
     }
 
     /**
@@ -83,8 +98,9 @@ class PackagesServiceProvider extends ServiceProvider
      */
     private function registerBreadcrumbsPackage()
     {
-        $this->registerProvider(Breadcrumbs\BreadcrumbsServiceProvider::class);
-        $this->alias('Breadcrumbs', Breadcrumbs\Facades\Breadcrumbs::class);
+        $this->registerProvider(BreadcrumbsServiceProvider::class);
+
+        $this->alias('Breadcrumbs', \Arcanedev\Breadcrumbs\Facades\Breadcrumbs::class);
     }
 
     /**
@@ -92,8 +108,9 @@ class PackagesServiceProvider extends ServiceProvider
      */
     private function registerNotifyPackage()
     {
-        $this->registerProvider(Notify\NotifyServiceProvider::class);
-        $this->alias('Notify', Notify\Facades\Notify::class);
+        $this->registerProvider(\Arcanedev\Notify\NotifyServiceProvider::class);
+
+        $this->alias('Notify', \Arcanedev\Notify\Facades\Notify::class);
     }
 
     /**
@@ -102,5 +119,7 @@ class PackagesServiceProvider extends ServiceProvider
     private function registerSidebarPackage()
     {
         $this->registerProvider(SidebarServiceProvider::class);
+
+        $this->alias('Sidebar', \Arcanesoft\Sidebar\Facades\Sidebar::class);
     }
 }
