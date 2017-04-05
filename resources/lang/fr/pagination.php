@@ -1,5 +1,6 @@
 <?php
 
 return [
-    'pages' => 'Page :current sur :last',
+    'pages'   => 'Page :current sur :last',
+    'total'   => 'Total: :total',
 ];
