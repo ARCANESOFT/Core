@@ -8,6 +8,7 @@ return [
     'created'     => 'créé',
     'updated'     => 'mis à jour',
     'deleted'     => 'supprimé',
+    'trashed'     => 'supprimé',
     'cleared'     => 'effacé',
     'restored'    => 'restauré',
     'expired'     => 'expiré',

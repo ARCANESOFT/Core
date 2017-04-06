@@ -5,4 +5,4 @@ $iconClass = isset($iconClass) ? $iconClass : 'fa fa-fw fa-search';
 $linkTitle = isset($linkTitle) ? $linkClass : trans('core::actions.show');
 $disabled  = isset($disabled)  ? $disabled  : false;
 ?>
-@include('core::admin._includes.actions._icon-link', compact('url', 'linkClass', 'linkTitle', 'iconClass'))
+@include('core::admin._includes.actions.icon-links._base', compact('url', 'linkClass', 'linkTitle', 'iconClass', 'disabled'))

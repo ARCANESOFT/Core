@@ -1,5 +1,5 @@
 <?php
-    $labelClass  = $active ? 'success'                : 'default';
+    $labelClass  = $active ? 'label label-success'    : 'label label-default';
     $activeTrans = $active ? 'core::statuses.enabled' : 'core::statuses.disabled';
 ?>
-<span class="label label-{{ $labelClass }}">{{ ucfirst(trans($activeTrans)) }}</span>
+<span class="{{ $labelClass }}">{{ ucfirst(trans($activeTrans)) }}</span>
