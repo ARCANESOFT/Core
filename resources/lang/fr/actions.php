@@ -13,5 +13,6 @@ return [
     'enable'     => 'activer',
     'restore'    => 'restaurer',
     'show'       => 'afficher',
+    'sync'       => 'synchroniser',
     'update'     => 'mettre à jour',
 ];

@@ -32,7 +32,8 @@
     "autoload": {
         "psr-4": {
             "Arcanesoft\\Core\\": "src/"
-        }
+        },
+        "files": ["helpers.php"]
     },
     "autoload-dev": {
         "psr-4": {

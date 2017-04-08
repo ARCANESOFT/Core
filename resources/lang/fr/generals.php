@@ -9,4 +9,5 @@ return [
     'created_at' => 'Date création',
     'updated_at' => 'Date modification',
     'deleted_at' => 'Date suppression',
+    'loading'    => 'Chargement',
 ];
