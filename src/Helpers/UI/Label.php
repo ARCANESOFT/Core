@@ -56,10 +56,11 @@ class Label
      *
      * @param  bool   $active
      * @param  array  $options
+     * @param  bool   $withIcon
      *
      * @return \Illuminate\Support\HtmlString
      */
-    public static function activeStatus($active, array $options = [])
+    public static function activeStatus($active, array $options = [], $withIcon)
     {
         // TODO: Refactor the options to a dedicated config file.
         $classes      = Arr::get($options, 'classes', [
@@ -70,12 +71,17 @@ class Label
             'enabled'  => 'core::statuses.enabled',
             'disabled' => 'core::statuses.disabled',
         ]);
-
-        $key = $active ? 'enabled' : 'disabled';
-
-        return static::generate(ucfirst(trans($translations[$key])), [
-            'class' => $classes[$key]
+        $icons = Arr::get($options, 'icons', [
+            'enabled'  => 'fa fa-fw fa-check',
+            'disabled' => 'fa fa-fw fa-ban',
         ]);
+
+        $key        = $active ? 'enabled' : 'disabled';
+        $attributes = ['class' => $classes[$key]];
+
+        return $withIcon
+            ? static::generateWithIcon(ucfirst(trans($translations[$key])), $icons[$key], $attributes)
+            : static::generate(ucfirst(trans($translations[$key])), $attributes);
     }
 
     /**

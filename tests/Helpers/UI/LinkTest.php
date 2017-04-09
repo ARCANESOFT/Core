@@ -12,66 +12,353 @@ use Arcanesoft\Core\Tests\TestCase;
 class LinkTest extends TestCase
 {
     /* -----------------------------------------------------------------
-     |  Properties
+     |  Activate Tests
      | -----------------------------------------------------------------
      */
-    /** @var  \Arcanesoft\Core\Helpers\UI\Link */
-    private $link;
 
-    /* -----------------------------------------------------------------
-     |  Main Methods
-     | -----------------------------------------------------------------
-     */
-    public function setUp()
-    {
-        parent::setUp();
-
-        $this->link = new Link();
-    }
-
-    public function tearDown()
-    {
-        unset($this->link);
-
-        parent::tearDown();
-    }
-
-    /* -----------------------------------------------------------------
-     |  Tests
-     | -----------------------------------------------------------------
-     */
     /** @test */
-    public function it_can_be_instantiated()
+    public function it_can_generate_activate_icon_link_with_defaults()
     {
-        $this->assertInstanceOf(\Arcanesoft\Core\Helpers\UI\Link::class, $this->link);
+        $url          = 'http://localhost/activate';
+        $expectations = [
+            [true, '<a href="'.$url.'" class="btn btn-xs btn-success" data-toggle="tooltip" data-original-title="Enable"><i class="fa fa-fw fa-power-off"></i></a>'],
+            [false, '<a href="'.$url.'" class="btn btn-xs btn-inverse" data-toggle="tooltip" data-original-title="Disable"><i class="fa fa-fw fa-power-off"></i></a>'],
+        ];
+
+        foreach ($expectations as $expected) {
+            $this->assertSame($expected[1], Link::activateIcon($expected[0], $url)->toHtml());
+            $this->assertSame($expected[1], link_activate_icon($expected[0], $url)->toHtml());
+        }
     }
 
     /** @test */
-    public function it_can_generate_add_link()
+    public function it_can_generate_activate_icon_link_without_tooltip()
     {
-        $link = $this->link->addLink('http://localhost/pages/add');
+        $url          = 'http://localhost/activate';
+        $expectations = [
+            [true, '<a href="'.$url.'" class="btn btn-xs btn-success"><i class="fa fa-fw fa-power-off"></i></a>'],
+            [false, '<a href="'.$url.'" class="btn btn-xs btn-inverse"><i class="fa fa-fw fa-power-off"></i></a>'],
+        ];
 
-        $this->assertSame(
-            '<a href="http://localhost/pages/add">'.
-                '<i class="fa fa-fw fa-plus"></i> Add'.
-            '</a>',
-            $link->toHtml()
-        );
+        foreach ($expectations as $expected) {
+            $this->assertSame($expected[1], Link::activateIcon($expected[0], $url, [], false)->toHtml());
+            $this->assertSame($expected[1], link_activate_icon($expected[0], $url, [], false)->toHtml());
+        }
+    }
 
-        $link = $this->link->addLink('http://localhost/pages/add', null, ['data-toggle' => 'tooltip', 'data-original-title' => 'Add info']);
+    /** @test */
+    public function it_can_generate_activate_icon_with_disabled_state()
+    {
+        $url          = 'http://localhost/activate';
+        $expectations = [
+            [true, '<a href="javascript:void(0);" class="btn btn-xs btn-default" data-toggle="tooltip" data-original-title="Enable" disabled="disabled"><i class="fa fa-fw fa-power-off"></i></a>'],
+            [false, '<a href="javascript:void(0);" class="btn btn-xs btn-default" data-toggle="tooltip" data-original-title="Disable" disabled="disabled"><i class="fa fa-fw fa-power-off"></i></a>'],
+        ];
 
-        $this->assertSame(
-            '<a href="http://localhost/pages/add" data-toggle="tooltip" data-original-title="Add info">'.
-                '<i class="fa fa-fw fa-plus"></i> Add'.
-            '</a>',
-            $link->toHtml()
-        );
+        foreach ($expectations as $expected) {
+            $this->assertSame($expected[1], Link::activateIcon($expected[0], $url, [], true, true)->toHtml());
+            $this->assertSame($expected[1], link_activate_icon($expected[0], $url, [], true, true)->toHtml());
+        }
+    }
 
-        $link = $this->link->addLink('http://localhost/pages/add', null, [], false);
+    /** @test */
+    public function it_can_generate_activate_icon_with_custom_attributes()
+    {
+        $url = '#activateModal';
 
-        $this->assertSame(
-            '<a href="http://localhost/pages/add">Add</a>',
-            $link->toHtml()
-        );
+        $expected =
+            '<a href="'.$url.'" data-current-status="disabled" class="btn btn-xs btn-success" data-toggle="tooltip" data-original-title="Enable">'.
+                '<i class="fa fa-fw fa-power-off"></i>'.
+            '</a>';
+
+        $this->assertSame($expected, Link::activateIcon(true, $url, ['data-current-status' => 'disabled'])->toHtml());
+        $this->assertSame($expected, link_activate_icon(true, $url, ['data-current-status' => 'disabled'])->toHtml());
+
+        $expected =
+            '<a href="'.$url.'" data-current-status="enabled" class="btn btn-xs btn-inverse" data-toggle="tooltip" data-original-title="Disable">'.
+                '<i class="fa fa-fw fa-power-off"></i>'.
+            '</a>';
+
+        $this->assertSame($expected, Link::activateIcon(false, $url, ['data-current-status' => 'enabled'])->toHtml());
+        $this->assertSame($expected, link_activate_icon(false, $url, ['data-current-status' => 'enabled'])->toHtml());
+    }
+
+    /** @test */
+    public function it_can_generate_activate_icon_for_modals()
+    {
+        $url = '#activateModal';
+
+        $expected =
+            '<a href="'.$url.'" data-current-status="enabled" class="btn btn-xs btn-inverse" data-toggle="tooltip" data-original-title="Disable">'.
+                '<i class="fa fa-fw fa-power-off"></i>'.
+            '</a>';
+
+        $this->assertSame($expected, Link::activateModalIcon(true, $url)->toHtml());
+
+        $expected =
+            '<a href="'.$url.'" data-current-status="disabled" class="btn btn-xs btn-success" data-toggle="tooltip" data-original-title="Enable">'.
+                '<i class="fa fa-fw fa-power-off"></i>'.
+            '</a>';
+
+        $this->assertSame($expected, Link::activateModalIcon(false, $url)->toHtml());
+    }
+
+    /** @test */
+    public function it_can_generate_activate_with_icon_for_modals()
+    {
+        $url = '#activateModal';
+
+        $expected = '<a href="'.$url.'" class="btn btn-sm btn-success"><i class="fa fa-fw fa-power-off"></i> Enable</a>';
+
+        $this->assertSame($expected, Link::activateModalWithIcon(true, $url)->toHtml());
+
+        $expected = '<a href="'.$url.'" class="btn btn-sm btn-inverse"><i class="fa fa-fw fa-power-off"></i> Disable</a>';
+
+        $this->assertSame($expected, Link::activateModalWithIcon(false, $url)->toHtml());
+    }
+
+    /* -----------------------------------------------------------------
+     |  Add Tests
+     | -----------------------------------------------------------------
+     */
+
+    /** @test */
+    public function it_can_generate_add_icon_link_with_defaults()
+    {
+        $url      = 'http://localhost/add';
+        $expected = '<a href="http://localhost/add" class="btn btn-xs btn-primary" data-toggle="tooltip" data-original-title="Add">'.
+                        '<i class="fa fa-fw fa-plus"></i>'.
+                    '</a>';
+
+        $this->assertSame($expected, Link::addIcon($url)->toHtml());
+        $this->assertSame($expected, link_add_icon($url)->toHtml());
+    }
+
+    /** @test */
+    public function it_can_generate_add_icon_link_without_tooltip()
+    {
+        $url      = 'http://localhost/add';
+        $expected = '<a href="http://localhost/add" class="btn btn-xs btn-primary"><i class="fa fa-fw fa-plus"></i></a>';
+
+        $this->assertSame($expected, Link::addIcon($url, [], false)->toHtml());
+        $this->assertSame($expected, link_add_icon($url, [], false)->toHtml());
+    }
+
+    /** @test */
+    public function it_can_generate_add_icon_with_disabled_state()
+    {
+        $url      = 'http://localhost/add';
+        $expected = '<a href="javascript:void(0);" class="btn btn-xs btn-default" data-toggle="tooltip" data-original-title="Add" disabled="disabled">'.
+                        '<i class="fa fa-fw fa-plus"></i>'.
+                    '</a>';
+
+        $this->assertSame($expected, Link::addIcon($url, [], true, true)->toHtml());
+        $this->assertSame($expected, link_add_icon($url, [], true, true)->toHtml());
+    }
+
+    /* -----------------------------------------------------------------
+     |  Delete
+     | -----------------------------------------------------------------
+     */
+
+    /** @test */
+    public function it_can_generate_delete_icon_link_for_modals()
+    {
+        $url      = '#deleteModal';
+        $expected = '<a href="'.$url.'" class="btn btn-xs btn-danger" data-toggle="tooltip" data-original-title="Delete">'.
+                        '<i class="fa fa-fw fa-trash-o"></i>'.
+                    '</a>';
+
+        $this->assertSame($expected, Link::deleteModalIcon($url)->toHtml());
+    }
+
+    /** @test */
+    public function it_can_generate_delete_icon_link_for_modals_with_attributes()
+    {
+        $url      = '#deleteModal';
+        $expected = '<a href="#deleteModal" data-model-id="1" class="btn btn-xs btn-danger" data-toggle="tooltip" data-original-title="Delete">'.
+                        '<i class="fa fa-fw fa-trash-o"></i>'.
+                    '</a>';
+
+        $this->assertSame($expected, Link::deleteModalIcon($url, ['data-model-id' => '1'])->toHtml());
+    }
+
+    /** @test */
+    public function it_can_generate_delete_icon_link_for_modals_with_attributes_but_without_data_if_disabled()
+    {
+        $url      = '#deleteModal';
+        $expected = '<a href="javascript:void(0);" id="delete-link" class="btn btn-xs btn-default" data-toggle="tooltip" data-original-title="Delete" disabled="disabled">'.
+                        '<i class="fa fa-fw fa-trash-o"></i>'.
+                    '</a>';
+
+        $this->assertSame($expected, Link::deleteModalIcon($url, ['data-model-id' => '1', 'id' => 'delete-link'], true, true)->toHtml());
+    }
+
+    /** @test */
+    public function it_can_generate_delete_link_with_icon_for_modals()
+    {
+        $url      = '#deleteModal';
+        $expected = '<a href="'.$url.'" class="btn btn-sm btn-danger"><i class="fa fa-fw fa-trash-o"></i> Delete</a>';
+
+        $this->assertSame($expected, Link::deleteModalWithIcon($url)->toHtml());
+
+        $url      = '#deleteModal';
+        $expected = '<a href="javascript:void(0);" class="btn btn-sm btn-default" disabled="disabled">'.
+                        '<i class="fa fa-fw fa-trash-o"></i> Delete'.
+                    '</a>';
+
+        $this->assertSame($expected, Link::deleteModalWithIcon($url, [], true)->toHtml());
+    }
+
+    /* -----------------------------------------------------------------
+     |  Detach Tests
+     | -----------------------------------------------------------------
+     */
+
+    /** @test */
+    public function it_can_generate_detach_icon_link_for_modals()
+    {
+        $url      = '#detachModal';
+        $expected = '<a href="'.$url.'" class="btn btn-xs btn-danger" data-toggle="tooltip" data-original-title="Detach">'.
+                        '<i class="fa fa-fw fa-chain-broken"></i>'.
+                    '</a>';
+
+        $this->assertSame($expected, Link::detachModalIcon($url)->toHtml());
+    }
+
+    /** @test */
+    public function it_can_generate_detach_icon_link_for_modals_with_attributes()
+    {
+        $url      = '#detachModal';
+        $expected = '<a href="#detachModal" data-model-id="1" class="btn btn-xs btn-danger" data-toggle="tooltip" data-original-title="Detach">'.
+                        '<i class="fa fa-fw fa-chain-broken"></i>'.
+                    '</a>';
+
+        $this->assertSame($expected, Link::detachModalIcon($url, ['data-model-id' => '1'])->toHtml());
+    }
+
+    /** @test */
+    public function it_can_generate_detach_icon_link_for_modals_with_attributes_but_without_data_if_disabled()
+    {
+        $url      = '#detachModal';
+        $expected = '<a href="javascript:void(0);" id="detach-link" class="btn btn-xs btn-default" data-toggle="tooltip" data-original-title="Detach" disabled="disabled">'.
+                        '<i class="fa fa-fw fa-chain-broken"></i>'.
+                    '</a>';
+
+        $this->assertSame($expected, Link::detachModalIcon($url, ['data-model-id' => '1', 'id' => 'detach-link'], true, true)->toHtml());
+    }
+
+    /* -----------------------------------------------------------------
+     |  Restore Tests
+     | -----------------------------------------------------------------
+     */
+
+    /** @test */
+    public function it_can_generate_restore_icon_link_for_modals()
+    {
+        $url      = '#restoreModal';
+        $expected = '<a href="'.$url.'" class="btn btn-xs btn-primary" data-toggle="tooltip" data-original-title="Restore">'.
+                        '<i class="fa fa-fw fa-reply"></i>'.
+                    '</a>';
+
+        $this->assertSame($expected, Link::restoreModalIcon($url)->toHtml());
+    }
+
+    /** @test */
+    public function it_can_generate_restore_link_with_icon_for_modals()
+    {
+        $url      = '#restoreModal';
+        $expected = '<a href="'.$url.'" class="btn btn-sm btn-primary"><i class="fa fa-fw fa-reply"></i> Restore</a>';
+
+        $this->assertSame($expected, Link::restoreModalWithIcon($url)->toHtml());
+    }
+
+    /* -----------------------------------------------------------------
+     |  Edit Tests
+     | -----------------------------------------------------------------
+     */
+
+    /** @test */
+    public function it_can_generate_edit_icon_link_with_defaults()
+    {
+        $url      = 'http://localhost/edit';
+        $expected = '<a href="http://localhost/edit" class="btn btn-xs btn-warning" data-toggle="tooltip" data-original-title="Edit">'.
+                        '<i class="fa fa-fw fa-pencil"></i>'.
+                    '</a>';
+
+        $this->assertSame($expected, Link::editIcon($url)->toHtml());
+        $this->assertSame($expected, link_edit_icon($url)->toHtml());
+    }
+
+    /** @test */
+    public function it_can_generate_edit_icon_link_without_tooltip()
+    {
+        $url      = 'http://localhost/edit';
+        $expected = '<a href="http://localhost/edit" class="btn btn-xs btn-warning"><i class="fa fa-fw fa-pencil"></i></a>';
+
+        $this->assertSame($expected, Link::editIcon($url, [], false)->toHtml());
+        $this->assertSame($expected, link_edit_icon($url, [], false)->toHtml());
+    }
+
+    /** @test */
+    public function it_can_generate_edit_icon_with_disabled_state()
+    {
+        $url      = 'http://localhost/edit';
+        $expected = '<a href="javascript:void(0);" class="btn btn-xs btn-default" data-toggle="tooltip" data-original-title="Edit" disabled="disabled">'.
+                        '<i class="fa fa-fw fa-pencil"></i>'.
+                    '</a>';
+
+        $this->assertSame($expected, Link::editIcon($url, [], true, true)->toHtml());
+        $this->assertSame($expected, link_edit_icon($url, [], true, true)->toHtml());
+    }
+
+    /** @test */
+    public function it_can_generate_edit_link_with_icon()
+    {
+        $url      = 'http://localhost/edit';
+        $expected = '<a href="http://localhost/edit" class="btn btn-sm btn-warning">'.
+                        '<i class="fa fa-fw fa-pencil"></i> Edit'.
+                    '</a>';
+
+        $this->assertSame($expected, Link::editWithIcon($url)->toHtml());
+    }
+
+    /* -----------------------------------------------------------------
+     |  Show Tests
+     | -----------------------------------------------------------------
+     */
+
+    /** @test */
+    public function it_can_generate_show_icon_link_with_defaults()
+    {
+        $url      = 'http://localhost/show';
+        $expected = '<a href="http://localhost/show" class="btn btn-xs btn-info" data-toggle="tooltip" data-original-title="Show">'.
+                        '<i class="fa fa-fw fa-search"></i>'.
+                    '</a>';
+
+        $this->assertSame($expected, Link::showIcon($url)->toHtml());
+        $this->assertSame($expected, link_show_icon($url)->toHtml());
+    }
+
+    /** @test */
+    public function it_can_generate_show_icon_link_without_tooltip()
+    {
+        $url      = 'http://localhost/show';
+        $expected = '<a href="http://localhost/show" class="btn btn-xs btn-info"><i class="fa fa-fw fa-search"></i></a>';
+
+        $this->assertSame($expected, Link::showIcon($url, [], false)->toHtml());
+        $this->assertSame($expected, link_show_icon($url, [], false)->toHtml());
+    }
+
+    /** @test */
+    public function it_can_generate_show_icon_with_disabled_state()
+    {
+        $url      = 'http://localhost/show';
+        $expected = '<a href="javascript:void(0);" class="btn btn-xs btn-default" data-toggle="tooltip" data-original-title="Show" disabled="disabled">'.
+                        '<i class="fa fa-fw fa-search"></i>'.
+                    '</a>';
+
+        $this->assertSame($expected, Link::showIcon($url, [], true, true)->toHtml());
+        $this->assertSame($expected, link_show_icon($url, [], true, true)->toHtml());
     }
 }
