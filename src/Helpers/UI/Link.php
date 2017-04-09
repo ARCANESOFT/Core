@@ -1,7 +1,7 @@
 <?php namespace Arcanesoft\Core\Helpers\UI;
 
+use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\Arr;
-use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
 
 /**
@@ -12,10 +12,306 @@ use Illuminate\Support\Str;
  *
  * @TODO: Refactoring
  */
-class Link
+class Link implements Htmlable
 {
     /* -----------------------------------------------------------------
+     |  Properties
+     | -----------------------------------------------------------------
+     */
+    /** @var string */
+    protected $action;
+
+    /** @var string */
+    protected $url;
+
+    /** @var \Illuminate\Support\Collection */
+    protected $attributes;
+
+    /** @var bool */
+    protected $disabled;
+
+    /** @var string */
+    protected $size = 'md';
+
+    /** @var bool */
+    public $withTitle = true;
+
+    /** @var bool */
+    protected $withIcon = true;
+
+    /** @var bool */
+    protected $withTooltip = true;
+
+    /* -----------------------------------------------------------------
+     |  Constructor
+     | -----------------------------------------------------------------
+     */
+    /**
+     * LinkElement constructor.
+     *
+     * @param  string  $action
+     * @param  string  $url
+     * @param  array   $attributes
+     * @param  bool    $disabled
+     */
+    public function __construct($action, $url, array $attributes = [], $disabled = false)
+    {
+        $this->disabled   = $disabled;
+        $this->action     = $action;
+        $this->url        = $url;
+
+        $this->setAttributes($attributes);
+    }
+
+    /* -----------------------------------------------------------------
+     |  Getters & Setters
+     | -----------------------------------------------------------------
+     */
+    /**
+     * Get the action title.
+     *
+     * @return string
+     */
+    protected function getActionTitle()
+    {
+        return Str::ucfirst(trans("core::actions.{$this->action}"));
+    }
+
+    /**
+     * Set the attributes.
+     *
+     * @param  array  $attributes
+     *
+     * @return self
+     */
+    public function setAttributes(array $attributes)
+    {
+        $this->attributes = collect($attributes);
+
+        if ($this->disabled)
+            $this->cleanAttributes();
+
+        return $this;
+    }
+
+    /**
+     * Set an attribute.
+     *
+     * @param  string  $key
+     * @param  mixed   $value
+     *
+     * @return self
+     */
+    public function setAttribute($key, $value)
+    {
+        $this->attributes->put($key, $value);
+
+        return $this;
+    }
+
+    protected function cleanAttributes()
+    {
+        $this->attributes = $this->attributes->reject(function ($value, $key) {
+            return Str::startsWith($key, ['data-']);
+        });
+
+        return $this;
+    }
+
+    /**
+     * Set the size.
+     *
+     * @param  string  $size
+     *
+     * @return self
+     */
+    public function size($size)
+    {
+        $this->size = $size;
+
+        return $this;
+    }
+
+    /**
+     * @param  bool  $withTitle
+     *
+     * @return self
+     */
+    public function withTitle($withTitle)
+    {
+        $this->withTitle = $withTitle;
+
+        return $this;
+    }
+
+    /**
+     * Show/Hide the icon.
+     *
+     * @var  bool  $icon
+     *
+     * @return self
+     */
+    public function icon($withIcon)
+    {
+        $this->withIcon = $withIcon;
+
+        return $this;
+    }
+
+    /**
+     * Enable the tooltip.
+     *
+     * @param  bool  $withTooltip
+     *
+     * @return self
+     */
+    public function tooltip($withTooltip)
+    {
+        $this->withTooltip = $withTooltip;
+
+        return $this;
+    }
+
+    /**
+     * Show only the icon and the title as tooltip.
+     *
+     * @return self
+     */
+    public function onlyIcon()
+    {
+        return $this->icon(true)->tooltip(true);
+    }
+
+    /* -----------------------------------------------------------------
      |  Main Methods
+     | -----------------------------------------------------------------
+     */
+    /**
+     * @param  string  $action
+     * @param  string  $url
+     * @param  array   $attributes
+     * @param  bool    $disabled
+     *
+     * @return self
+     */
+    public static function make($action, $url, array $attributes = [], $disabled = false)
+    {
+        return new static($action, $url, $attributes, $disabled);
+    }
+
+    /* -----------------------------------------------------------------
+     |  Other Functions
+     | -----------------------------------------------------------------
+     */
+    /**
+     * Get content as a string of HTML.
+     *
+     * @return string
+     */
+    public function toHtml()
+    {
+        return '<a'.$this->renderAttributes().'>'.$this->renderValue().'</a>';
+    }
+
+    /**
+     * Render the link value.
+     *
+     * @return string
+     */
+    protected function renderValue()
+    {
+        return ($this->withTooltip || ! $this->withTitle)
+            ? $this->renderIcon()
+            : $this->renderIcon().' '.$this->getActionTitle();
+    }
+
+    /**
+     * Render the icon.
+     *
+     * @return string
+     */
+    protected function renderIcon()
+    {
+        $icon = Arr::get([
+            'add'     => 'fa fa-fw fa-plus',
+            'delete'  => 'fa fa-fw fa-trash-o',
+            'detach'  => 'fa fa-fw fa-chain-broken',
+            'disable' => 'fa fa-fw fa-power-off',
+            'edit'    => 'fa fa-fw fa-pencil',
+            'enable'  => 'fa fa-fw fa-power-off',
+            'restore' => 'fa fa-fw fa-reply',
+            'show'    => 'fa fa-fw fa-search',
+            'update'  => 'fa fa-fw fa-pencil',
+        ], $this->action);
+
+        return '<i class="'.$icon.'"></i>';
+    }
+
+    /**
+     * Render the attributes.
+     *
+     * @return string
+     */
+    protected function renderAttributes()
+    {
+        $attributes = collect();
+        $attributes->put('href',  $this->disabled ? 'javascript:void(0);' : $this->url);
+        $attributes->put('class', $this->getLinkClass());
+
+        if ($this->withTooltip) {
+            $attributes->put('data-toggle', 'tooltip');
+            $attributes->put('data-original-title', $this->getActionTitle());
+        }
+
+        if ($this->disabled) {
+            $attributes->put('disabled', 'disabled');
+        }
+
+        $attributes = $attributes->merge($this->attributes);
+
+        return html()->attributes($attributes->toArray());
+    }
+
+    /**
+     * Get the link class.
+     *
+     * @return string
+     */
+    protected function getLinkClass()
+    {
+        return implode(' ', array_filter(['btn', $this->getLinkSize(), $this->getLinkColor()]));
+    }
+
+    protected function getLinkColor()
+    {
+        if ($this->disabled)
+            return 'btn-default';
+
+        return Arr::get([
+            'add'     => 'btn-primary',
+            'delete'  => 'btn-danger',
+            'detach'  => 'btn-danger',
+            'disable' => 'btn-inverse',
+            'edit'    => 'btn-warning',
+            'enable'  => 'btn-success',
+            'restore' => 'btn-primary',
+            'show'    => 'btn-info',
+            'update'  => 'btn-warning',
+        ], $this->action);
+    }
+
+    protected function getLinkSize()
+    {
+        return Arr::get([
+            'lg' => 'btn-lg',
+            'md' => '',
+            'sm' => 'btn-sm',
+            'xs' => 'btn-xs',
+        ], $this->size);
+    }
+
+    /* -----------------------------------------------------------------
+     |  Helpers Methods
      | -----------------------------------------------------------------
      */
     /**
@@ -24,40 +320,16 @@ class Link
      * @param  bool    $active
      * @param  string  $url
      * @param  array   $attributes
-     * @param  bool    $withTooltip
      * @param  bool    $disabled
      *
-     * @return \Illuminate\Support\HtmlString
+     * @return self
      */
-    public static function activateIcon($active, $url, array $attributes = [], $withTooltip = true, $disabled = false)
+    public static function activateIcon($active, $url, array $attributes = [], $disabled = false)
     {
-        // TODO: Refactor the options to a dedicated config file.
-        $classes = [
-            'enable'  => 'btn btn-xs btn-success',
-            'disable' => 'btn btn-xs btn-inverse',
-        ];
-        $trans   = [
-            'enable'  => 'core::actions.enable',
-            'disable' => 'core::actions.disable',
-        ];
-        $icons   = [
-            'enable'  => 'fa fa-fw fa-power-off',
-            'disable' => 'fa fa-fw fa-power-off',
-        ];
-
-        $key        = $active ? 'enable' : 'disable';
-        $value      = '<i class="'.$icons[$key].'"></i>';
-
-        $attributes['class'] = $classes[$key];
-
-        if ($withTooltip) {
-            $attributes['data-toggle']         = 'tooltip';
-            $attributes['data-original-title'] = Str::ucfirst(trans($trans[$key]));
-        }
-
-        return $disabled
-            ? static::generateDisabledForIcons($value, $attributes)
-            : static::generate($url, $value, $attributes);
+        return self::make($active ? 'enable' : 'disable', $url, $attributes, $disabled)
+                   ->size('xs')
+                   ->withTitle(false)
+                   ->icon(true);
     }
 
     /**
@@ -66,30 +338,20 @@ class Link
      * @param  bool    $active
      * @param  string  $url
      * @param  array   $attributes
-     * @param  bool    $withTooltip
      * @param  bool    $disabled
      *
-     * @return \Illuminate\Support\HtmlString
+     * @return self
      */
-    public static function activateModalIcon($active, $url, array $attributes = [], $withTooltip = true, $disabled = false)
+    public static function activateModalIcon($active, $url, array $attributes = [], $disabled = false)
     {
-        // TODO: Refactor the options to a dedicated config file.
         $dataAttribute = 'data-current-status';
         $statuses      = [
             'enabled'  => 'enabled',
             'disabled' => 'disabled',
         ];
 
-        if ($disabled)
-            $attributes = static::cleanAttributes($attributes);
-
-        $key = $active ? 'enabled' : 'disabled';
-
-        $attributes = array_merge($attributes, [
-            $dataAttribute => $statuses[$key],
-        ]);
-
-        return static::activateIcon( ! $active, $url, $attributes, $withTooltip, $disabled);
+        return static::activateIcon( ! $active, $url, $attributes, $disabled)
+                     ->setAttribute($dataAttribute, $statuses[$active ? 'enabled' : 'disabled']);
     }
 
     /**
@@ -100,33 +362,21 @@ class Link
      * @param  array   $attributes
      * @param  bool    $disabled
      *
-     * @return \Illuminate\Support\HtmlString
+     * @return self
      */
     public static function activateModalWithIcon($active, $url, array $attributes = [], $disabled = false)
     {
-        // TODO: Refactor the options to a dedicated config file.
-        $icons   = [
-            'enabled'  => 'fa fa-fw fa-power-off',
-            'disabled' => 'fa fa-fw fa-power-off',
-        ];
-        $classes = [
-            'enabled'  => 'btn btn-sm btn-success',
-            'disabled' => 'btn btn-sm btn-inverse',
-        ];
-        $trans = [
-            'enabled'  => 'core::actions.enable',
-            'disabled' => 'core::actions.disable',
+        $dataAttribute = 'data-current-status';
+        $statuses      = [
+            'enabled'  => 'enabled',
+            'disabled' => 'disabled',
         ];
 
-        $key = $active ? 'enabled' : 'disabled';
-
-        $attributes['class'] = $classes[$key];
-
-        $value = '<i class="'.$icons[$key].'"></i> '.Str::ucfirst(trans($trans[$key]));
-
-        return $disabled
-            ? static::generateDisabled($value, $attributes)
-            : static::generate($url, $value, $attributes);
+        return static::activateIcon( ! $active, $url, $attributes, $disabled)
+                     ->setAttribute($dataAttribute, $statuses[$active ? 'enabled' : 'disabled'])
+                     ->size('sm')
+                     ->withTitle(true)
+                     ->tooltip(false);
     }
 
     /**
@@ -134,29 +384,15 @@ class Link
      *
      * @param  string  $url
      * @param  array   $attributes
-     * @param  bool    $withTooltip
      * @param  bool    $disabled
      *
-     * @return \Illuminate\Support\HtmlString
+     * @return self
      */
-    public static function addIcon($url, array $attributes = [], $withTooltip = true, $disabled = false)
+    public static function addIcon($url, array $attributes = [], $disabled = false)
     {
-        // TODO: Refactor the options to a dedicated config file.
-        $class = 'btn btn-xs btn-primary';
-        $icon  = 'fa fa-fw fa-plus';
-
-        $attributes['class'] = $class;
-
-        if ($withTooltip) {
-            $attributes['data-toggle']         = 'tooltip';
-            $attributes['data-original-title'] = Str::ucfirst(trans('core::actions.add'));
-        }
-
-        $value = '<i class="'.$icon.'"></i>';
-
-        return $disabled
-            ? static::generateDisabledForIcons($value, $attributes)
-            : static::generate($url, $value, $attributes);
+        return self::make('add', $url, $attributes, $disabled)
+                   ->size('xs')
+                   ->withTitle(false);
     }
 
     /**
@@ -164,32 +400,15 @@ class Link
      *
      * @param  string  $url
      * @param  array   $attributes
-     * @param  bool    $withTooltip
      * @param  bool    $disabled
      *
-     * @return \Illuminate\Support\HtmlString
+     * @return self
      */
-    public static function deleteModalIcon($url, array $attributes = [], $withTooltip = true, $disabled = false)
+    public static function deleteModalIcon($url, array $attributes = [], $disabled = false)
     {
-        // TODO: Refactor the options to a dedicated config file.
-        $icon  = 'fa fa-fw fa-trash-o';
-        $class = 'btn btn-xs btn-danger';
-        $trans = 'core::actions.delete';
-
-        $value               = '<i class="'.$icon.'"></i>';
-        $attributes['class'] = $class;
-
-        if ($disabled)
-            $attributes = static::cleanAttributes($attributes);
-
-        if ($withTooltip) {
-            $attributes['data-toggle']         = 'tooltip';
-            $attributes['data-original-title'] = Str::ucfirst(trans($trans));
-        }
-
-        return $disabled
-            ? static::generateDisabledForIcons($value, $attributes)
-            : static::generate($url, $value, $attributes);
+        return self::make('delete', $url, $attributes, $disabled)
+                   ->size('xs')
+                   ->withTitle(false);
     }
 
     /**
@@ -199,22 +418,14 @@ class Link
      * @param  array   $attributes
      * @param  bool    $disabled
      *
-     * @return \Illuminate\Support\HtmlString
+     * @return self
      */
     public static function deleteModalWithIcon($url, array $attributes = [], $disabled = false)
     {
-        // TODO: Refactor the options to a dedicated config file.
-        $icon  = 'fa fa-fw fa-trash-o';
-        $class = 'btn btn-sm btn-danger';
-        $trans = 'core::actions.delete';
-
-        $attributes['class'] = $class;
-
-        $value = '<i class="'.$icon.'"></i> '.Str::ucfirst(trans($trans));
-
-        return $disabled
-            ? static::generateDisabled($value, $attributes)
-            : static::generate($url, $value, $attributes);
+        return static::make('delete', $url, $attributes, $disabled)
+                     ->size('sm')
+                     ->withTitle(true)
+                     ->tooltip(false);
     }
 
     /**
@@ -222,32 +433,15 @@ class Link
      *
      * @param  string  $url
      * @param  array   $attributes
-     * @param  bool    $withTooltip
      * @param  bool    $disabled
      *
-     * @return \Illuminate\Support\HtmlString
+     * @return self
      */
-    public static function detachModalIcon($url, array $attributes = [], $withTooltip = true, $disabled = false)
+    public static function detachModalIcon($url, array $attributes = [], $disabled = false)
     {
-        // TODO: Refactor the options to a dedicated config file.
-        $icon  = 'fa fa-fw fa-chain-broken';
-        $class = 'btn btn-xs btn-danger';
-        $trans = 'core::actions.detach';
-
-        $value               = '<i class="'.$icon.'"></i>';
-        $attributes['class'] = $class;
-
-        if ($disabled)
-            $attributes = static::cleanAttributes($attributes);
-
-        if ($withTooltip) {
-            $attributes['data-toggle']         = 'tooltip';
-            $attributes['data-original-title'] = Str::ucfirst(trans($trans));
-        }
-
-        return $disabled
-            ? static::generateDisabledForIcons($value, $attributes)
-            : static::generate($url, $value, $attributes);
+        return self::make('detach', $url, $attributes, $disabled)
+                   ->size('xs')
+                   ->withTitle(false);
     }
 
     /**
@@ -255,29 +449,15 @@ class Link
      *
      * @param  string  $url
      * @param  array   $attributes
-     * @param  bool    $withTooltip
      * @param  bool    $disabled
      *
-     * @return \Illuminate\Support\HtmlString
+     * @return self
      */
-    public static function editIcon($url, array $attributes = [], $withTooltip = true, $disabled = false)
+    public static function editIcon($url, array $attributes = [], $disabled = false)
     {
-        // TODO: Refactor the options to a dedicated config file.
-        $icon  = 'fa fa-fw fa-pencil';
-        $class = 'btn btn-xs btn-warning';
-
-        $attributes['class'] = $class;
-
-        if ($withTooltip) {
-            $attributes['data-toggle']         = 'tooltip';
-            $attributes['data-original-title'] = Str::ucfirst(trans('core::actions.edit'));
-        }
-
-        $value = '<i class="'.$icon.'"></i>';
-
-        return $disabled
-            ? static::generateDisabledForIcons($value, $attributes)
-            : static::generate($url, $value, $attributes);
+        return self::make('edit', $url, $attributes, $disabled)
+                   ->size('xs')
+                   ->withTitle(false);
     }
 
     /**
@@ -287,22 +467,13 @@ class Link
      * @param  array   $attributes
      * @param  bool    $disabled
      *
-     * @return \Illuminate\Support\HtmlString
+     * @return self
      */
     public static function editWithIcon($url, array $attributes = [], $disabled = false)
     {
-        // TODO: Refactor the options to a dedicated config file.
-        $icon  = 'fa fa-fw fa-pencil';
-        $class = 'btn btn-sm btn-warning';
-        $trans = 'core::actions.edit';
-
-        $attributes['class'] = $class;
-
-        $value = '<i class="'.$icon.'"></i> '.Str::ucfirst(trans($trans));
-
-        return $disabled
-            ? static::generateDisabled($value, $attributes)
-            : static::generate($url, $value, $attributes);
+        return self::make('edit', $url, $attributes, $disabled)
+                   ->size('sm')
+                   ->tooltip(false);
     }
 
     /**
@@ -310,33 +481,15 @@ class Link
      *
      * @param  string  $url
      * @param  array   $attributes
-     * @param  bool    $withTooltip
      * @param  bool    $disabled
      *
-     * @return \Illuminate\Support\HtmlString
+     * @return self
      */
-    public static function restoreModalIcon($url, array $attributes = [], $withTooltip = true, $disabled = false)
+    public static function restoreModalIcon($url, array $attributes = [], $disabled = false)
     {
-        // TODO: Refactor the options to a dedicated config file.
-        $icon  = 'fa fa-fw fa-reply';
-        $class = 'btn btn-xs btn-primary';
-        $trans = 'core::actions.restore';
-
-        $attributes['class'] = $class;
-
-        if ($disabled)
-            $attributes = static::cleanAttributes($attributes);
-
-        if ($withTooltip) {
-            $attributes['data-toggle']         = 'tooltip';
-            $attributes['data-original-title'] = Str::ucfirst(trans($trans));
-        }
-
-        $value = '<i class="'.$icon.'"></i>';
-
-        return $disabled
-            ? static::generateDisabledForIcons($value, $attributes)
-            : static::generate($url, $value, $attributes);
+        return self::make('restore', $url, $attributes, $disabled)
+                   ->size('xs')
+                   ->withTitle(false);
     }
 
     /**
@@ -346,22 +499,14 @@ class Link
      * @param  array   $attributes
      * @param  bool    $disabled
      *
-     * @return \Illuminate\Support\HtmlString
+     * @return self
      */
     public static function restoreModalWithIcon($url, array $attributes = [], $disabled = false)
     {
-        // TODO: Refactor the options to a dedicated config file.
-        $icon  = 'fa fa-fw fa-reply';
-        $class = 'btn btn-sm btn-primary';
-        $trans = 'core::actions.restore';
-
-        $attributes['class'] = $class;
-
-        $value = '<i class="'.$icon.'"></i> '.Str::ucfirst(trans($trans));
-
-        return $disabled
-            ? static::generateDisabled($value, $attributes)
-            : static::generate($url, $value, $attributes);
+        return static::make('restore', $url, $attributes, $disabled)
+                     ->size('sm')
+                     ->withTitle(true)
+                     ->tooltip(false);
     }
 
     /**
@@ -369,93 +514,14 @@ class Link
      *
      * @param  string  $url
      * @param  array   $attributes
-     * @param  bool    $withTooltip
      * @param  bool    $disabled
      *
-     * @return \Illuminate\Support\HtmlString
+     * @return self
      */
-    public static function showIcon($url, array $attributes = [], $withTooltip = true, $disabled = false)
+    public static function showIcon($url, array $attributes = [], $disabled = false)
     {
-        // TODO: Refactor the options to a dedicated config file.
-        $icon  = 'fa fa-fw fa-search';
-        $class = 'btn btn-xs btn-info';
-
-        $attributes['class'] = $class;
-
-        if ($withTooltip) {
-            $attributes['data-toggle']         = 'tooltip';
-            $attributes['data-original-title'] = Str::ucfirst(trans('core::actions.show'));
-        }
-
-        $value = '<i class="'.$icon.'"></i>';
-
-        return $disabled
-            ? static::generateDisabledForIcons($value, $attributes)
-            : static::generate($url, $value, $attributes);
-    }
-
-    /* -----------------------------------------------------------------
-     |  Other Methods
-     | -----------------------------------------------------------------
-     */
-    /**
-     * @param  string  $value
-     * @param  array   $attributes
-     *
-     * @return \Illuminate\Support\HtmlString
-     */
-    protected static function generateDisabledForIcons($value, array $attributes)
-    {
-        return static::generate('javascript:void(0);', $value, array_merge($attributes, [
-            'class'    => 'btn btn-xs btn-default',
-            'disabled' => 'disabled',
-        ]));
-    }
-
-    /**
-     * Generate a disabled link.
-     *
-     * @param  string  $value
-     * @param  array   $attributes
-     *
-     * @return \Illuminate\Support\HtmlString
-     */
-    protected static function generateDisabled($value, array $attributes)
-    {
-        return static::generate('javascript:void(0);', $value, array_merge($attributes, [
-            'class'    => 'btn btn-sm btn-default',
-            'disabled' => 'disabled',
-        ]));
-    }
-
-    /**
-     * Generate the link.
-     *
-     * @param  string  $url
-     * @param  string  $value
-     * @param  array   $attributes
-     *
-     * @return \Illuminate\Support\HtmlString
-     */
-    protected static function generate($url, $value, array $attributes)
-    {
-        return new HtmlString(
-            '<a href="'.$url.'"'.html()->attributes($attributes).'>'.$value.'</a>'
-        );
-    }
-
-    /**
-     * Clean the attributes if the link is disabled.
-     *
-     * @param  array  $attributes
-     *
-     * @return array
-     */
-    private static function cleanAttributes(array $attributes)
-    {
-        // TODO: Make the needles configurable
-        return Arr::where($attributes, function ($value, $key) {
-            return ! Str::startsWith($key, ['data-']);
-        });
+        return self::make('show', $url, $attributes, $disabled)
+                   ->size('xs')
+                   ->withTitle(false);
     }
 }

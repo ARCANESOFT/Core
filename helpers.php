@@ -108,13 +108,12 @@ if ( ! function_exists('link_activate_icon')) {
      * @param  bool    $active
      * @param  string  $url
      * @param  array   $attributes
-     * @param  bool    $withTooltip
      * @param  bool    $disabled
      *
-     * @return \Illuminate\Support\HtmlString
+     * @return Link
      */
-    function link_activate_icon($active, $url, array $attributes = [], $withTooltip = true, $disabled = false) {
-        return Link::activateIcon($active, $url, $attributes, $withTooltip, $disabled);
+    function link_activate_icon($active, $url, array $attributes = [], $disabled = false) {
+        return Link::activateIcon($active, $url, $attributes, $disabled);
     }
 }
 
@@ -125,13 +124,12 @@ if ( ! function_exists('link_activate_modal_icon')) {
      * @param  bool    $active
      * @param  string  $url
      * @param  array   $attributes
-     * @param  bool    $withTooltip
      * @param  bool    $disabled
      *
-     * @return \Illuminate\Support\HtmlString
+     * @return Link
      */
-    function link_activate_modal_icon($active, $url, array $attributes = [], $withTooltip = true, $disabled = false) {
-        return Link::activateModalIcon($active, $url, $attributes, $withTooltip, $disabled);
+    function link_activate_modal_icon($active, $url, array $attributes = [], $disabled = false) {
+        return Link::activateModalIcon($active, $url, $attributes, $disabled);
     }
 }
 
@@ -141,13 +139,12 @@ if ( ! function_exists('link_add_icon')) {
      *
      * @param  string  $url
      * @param  array   $attributes
-     * @param  bool    $withTooltip
      * @param  bool    $disabled
      *
-     * @return \Illuminate\Support\HtmlString
+     * @return Link
      */
-    function link_add_icon($url, array $attributes = [], $withTooltip = true, $disabled = false) {
-        return Link::addIcon($url, $attributes, $withTooltip, $disabled);
+    function link_add_icon($url, array $attributes = [], $disabled = false) {
+        return Link::addIcon($url, $attributes, $disabled);
     }
 }
 
@@ -157,13 +154,12 @@ if ( ! function_exists('link_delete_modal_icon')) {
      *
      * @param  string  $url
      * @param  array   $attributes
-     * @param  bool    $withTooltip
      * @param  bool    $disabled
      *
-     * @return \Illuminate\Support\HtmlString
+     * @return Link
      */
-    function link_delete_modal_icon($url, array $attributes = [], $withTooltip = true, $disabled = false) {
-        return Link::deleteModalIcon($url, $attributes, $withTooltip, $disabled);
+    function link_delete_modal_icon($url, array $attributes = [], $disabled = false) {
+        return Link::deleteModalIcon($url, $attributes, $disabled);
     }
 }
 
@@ -175,7 +171,7 @@ if ( ! function_exists('link_delete_modal_with_icon')) {
      * @param  array   $attributes
      * @param  bool    $disabled
      *
-     * @return \Illuminate\Support\HtmlString
+     * @return Link
      */
     function link_delete_modal_with_icon($url, array $attributes = [], $disabled = false) {
         return Link::deleteModalWithIcon($url, $attributes, $disabled);
@@ -191,7 +187,7 @@ if ( ! function_exists('link_activate_modal_with_icon')) {
      * @param  array   $attributes
      * @param  bool    $disabled
      *
-     * @return \Illuminate\Support\HtmlString
+     * @return Link
      */
     function link_activate_modal_with_icon($active, $url, array $attributes = [], $disabled = false) {
         return Link::activateModalWithIcon($active, $url, $attributes, $disabled);
@@ -204,13 +200,12 @@ if ( ! function_exists('link_detach_modal_icon')) {
      *
      * @param  string  $url
      * @param  array   $attributes
-     * @param  bool    $withTooltip
      * @param  bool    $disabled
      *
-     * @return \Illuminate\Support\HtmlString
+     * @return Link
      */
-    function link_detach_modal_icon($url, array $attributes = [], $withTooltip = true, $disabled = false) {
-        return Link::detachModalIcon($url, $attributes, $withTooltip, $disabled);
+    function link_detach_modal_icon($url, array $attributes = [], $disabled = false) {
+        return Link::detachModalIcon($url, $attributes, $disabled);
     }
 }
 
@@ -220,13 +215,12 @@ if ( ! function_exists('link_edit_icon')) {
      *
      * @param  string  $url
      * @param  array   $attributes
-     * @param  bool    $withTooltip
      * @param  bool    $disabled
      *
-     * @return \Illuminate\Support\HtmlString
+     * @return Link
      */
-    function link_edit_icon($url, array $attributes = [], $withTooltip = true, $disabled = false) {
-        return Link::editIcon($url, $attributes, $withTooltip, $disabled);
+    function link_edit_icon($url, array $attributes = [], $disabled = false) {
+        return Link::editIcon($url, $attributes, $disabled);
     }
 }
 
@@ -238,7 +232,7 @@ if ( ! function_exists('link_edit_with_icon')) {
      * @param  array   $attributes
      * @param  bool    $disabled
      *
-     * @return \Illuminate\Support\HtmlString
+     * @return Link
      */
     function link_edit_with_icon($url, array $attributes = [], $disabled = false) {
         return Link::editWithIcon($url, $attributes, $disabled);
@@ -251,13 +245,12 @@ if ( ! function_exists('link_restore_modal_icon')) {
      *
      * @param  string  $url
      * @param  array   $attributes
-     * @param  bool    $withTooltip
      * @param  bool    $disabled
      *
-     * @return \Illuminate\Support\HtmlString
+     * @return Link
      */
-    function link_restore_modal_icon($url, array $attributes = [], $withTooltip = true, $disabled = false) {
-        return Link::restoreModalIcon($url, $attributes, $withTooltip, $disabled);
+    function link_restore_modal_icon($url, array $attributes = [], $disabled = false) {
+        return Link::restoreModalIcon($url, $attributes, $disabled);
     }
 }
 
@@ -269,7 +262,7 @@ if ( ! function_exists('link_restore_modal_with_icon')) {
      * @param  array   $attributes
      * @param  bool    $disabled
      *
-     * @return \Illuminate\Support\HtmlString
+     * @return Link
      */
     function link_restore_modal_with_icon($url, array $attributes = [], $disabled = false) {
         return Link::restoreModalWithIcon($url, $attributes, $disabled);
@@ -282,12 +275,11 @@ if ( ! function_exists('link_show_icon')) {
      *
      * @param  string  $url
      * @param  array   $attributes
-     * @param  bool    $withTooltip
      * @param  bool    $disabled
      *
-     * @return \Illuminate\Support\HtmlString
+     * @return Link
      */
-    function link_show_icon($url, array $attributes = [], $withTooltip = true, $disabled = false) {
-        return Link::showIcon($url, $attributes, $withTooltip, $disabled);
+    function link_show_icon($url, array $attributes = [], $disabled = false) {
+        return Link::showIcon($url, $attributes, $disabled);
     }
 }

@@ -41,8 +41,8 @@ class LinkTest extends TestCase
         ];
 
         foreach ($expectations as $expected) {
-            $this->assertSame($expected[1], Link::activateIcon($expected[0], $url, [], false)->toHtml());
-            $this->assertSame($expected[1], link_activate_icon($expected[0], $url, [], false)->toHtml());
+            $this->assertSame($expected[1], Link::activateIcon($expected[0], $url, [], false)->tooltip(false)->toHtml());
+            $this->assertSame($expected[1], link_activate_icon($expected[0], $url, [], false)->tooltip(false)->toHtml());
         }
     }
 
@@ -56,8 +56,8 @@ class LinkTest extends TestCase
         ];
 
         foreach ($expectations as $expected) {
-            $this->assertSame($expected[1], Link::activateIcon($expected[0], $url, [], true, true)->toHtml());
-            $this->assertSame($expected[1], link_activate_icon($expected[0], $url, [], true, true)->toHtml());
+            $this->assertSame($expected[1], Link::activateIcon($expected[0], $url, [], true)->toHtml());
+            $this->assertSame($expected[1], link_activate_icon($expected[0], $url, [], true)->toHtml());
         }
     }
 
@@ -67,7 +67,7 @@ class LinkTest extends TestCase
         $url = '#activateModal';
 
         $expected =
-            '<a href="'.$url.'" data-current-status="disabled" class="btn btn-xs btn-success" data-toggle="tooltip" data-original-title="Enable">'.
+            '<a href="'.$url.'" class="btn btn-xs btn-success" data-toggle="tooltip" data-original-title="Enable" data-current-status="disabled">'.
                 '<i class="fa fa-fw fa-power-off"></i>'.
             '</a>';
 
@@ -75,7 +75,7 @@ class LinkTest extends TestCase
         $this->assertSame($expected, link_activate_icon(true, $url, ['data-current-status' => 'disabled'])->toHtml());
 
         $expected =
-            '<a href="'.$url.'" data-current-status="enabled" class="btn btn-xs btn-inverse" data-toggle="tooltip" data-original-title="Disable">'.
+            '<a href="'.$url.'" class="btn btn-xs btn-inverse" data-toggle="tooltip" data-original-title="Disable" data-current-status="enabled">'.
                 '<i class="fa fa-fw fa-power-off"></i>'.
             '</a>';
 
@@ -88,17 +88,15 @@ class LinkTest extends TestCase
     {
         $url = '#activateModal';
 
-        $expected =
-            '<a href="'.$url.'" data-current-status="enabled" class="btn btn-xs btn-inverse" data-toggle="tooltip" data-original-title="Disable">'.
-                '<i class="fa fa-fw fa-power-off"></i>'.
-            '</a>';
+        $expected = '<a href="'.$url.'" class="btn btn-xs btn-inverse" data-toggle="tooltip" data-original-title="Disable" data-current-status="enabled">'.
+                        '<i class="fa fa-fw fa-power-off"></i>'.
+                    '</a>';
 
         $this->assertSame($expected, Link::activateModalIcon(true, $url)->toHtml());
 
-        $expected =
-            '<a href="'.$url.'" data-current-status="disabled" class="btn btn-xs btn-success" data-toggle="tooltip" data-original-title="Enable">'.
-                '<i class="fa fa-fw fa-power-off"></i>'.
-            '</a>';
+        $expected = '<a href="'.$url.'" class="btn btn-xs btn-success" data-toggle="tooltip" data-original-title="Enable" data-current-status="disabled">'.
+                        '<i class="fa fa-fw fa-power-off"></i>'.
+                    '</a>';
 
         $this->assertSame($expected, Link::activateModalIcon(false, $url)->toHtml());
     }
@@ -108,13 +106,17 @@ class LinkTest extends TestCase
     {
         $url = '#activateModal';
 
-        $expected = '<a href="'.$url.'" class="btn btn-sm btn-success"><i class="fa fa-fw fa-power-off"></i> Enable</a>';
+        $expected = '<a href="'.$url.'" class="btn btn-sm btn-success" data-id="12" data-current-status="disabled">'.
+                        '<i class="fa fa-fw fa-power-off"></i> Enable'.
+                    '</a>';
 
-        $this->assertSame($expected, Link::activateModalWithIcon(true, $url)->toHtml());
+        $this->assertSame($expected, Link::activateModalWithIcon(false, $url, ['data-id' => '12'])->toHtml());
 
-        $expected = '<a href="'.$url.'" class="btn btn-sm btn-inverse"><i class="fa fa-fw fa-power-off"></i> Disable</a>';
+        $expected = '<a href="'.$url.'" class="btn btn-sm btn-inverse" data-id="12" data-current-status="enabled">'.
+                        '<i class="fa fa-fw fa-power-off"></i> Disable'.
+                    '</a>';
 
-        $this->assertSame($expected, Link::activateModalWithIcon(false, $url)->toHtml());
+        $this->assertSame($expected, Link::activateModalWithIcon(true, $url, ['data-id' => '12'])->toHtml());
     }
 
     /* -----------------------------------------------------------------
@@ -140,8 +142,8 @@ class LinkTest extends TestCase
         $url      = 'http://localhost/add';
         $expected = '<a href="http://localhost/add" class="btn btn-xs btn-primary"><i class="fa fa-fw fa-plus"></i></a>';
 
-        $this->assertSame($expected, Link::addIcon($url, [], false)->toHtml());
-        $this->assertSame($expected, link_add_icon($url, [], false)->toHtml());
+        $this->assertSame($expected, Link::addIcon($url, [], false)->tooltip(false)->toHtml());
+        $this->assertSame($expected, link_add_icon($url, [], false)->tooltip(false)->toHtml());
     }
 
     /** @test */
@@ -176,7 +178,7 @@ class LinkTest extends TestCase
     public function it_can_generate_delete_icon_link_for_modals_with_attributes()
     {
         $url      = '#deleteModal';
-        $expected = '<a href="#deleteModal" data-model-id="1" class="btn btn-xs btn-danger" data-toggle="tooltip" data-original-title="Delete">'.
+        $expected = '<a href="#deleteModal" class="btn btn-xs btn-danger" data-toggle="tooltip" data-original-title="Delete" data-model-id="1">'.
                         '<i class="fa fa-fw fa-trash-o"></i>'.
                     '</a>';
 
@@ -187,7 +189,7 @@ class LinkTest extends TestCase
     public function it_can_generate_delete_icon_link_for_modals_with_attributes_but_without_data_if_disabled()
     {
         $url      = '#deleteModal';
-        $expected = '<a href="javascript:void(0);" id="delete-link" class="btn btn-xs btn-default" data-toggle="tooltip" data-original-title="Delete" disabled="disabled">'.
+        $expected = '<a href="javascript:void(0);" class="btn btn-xs btn-default" data-toggle="tooltip" data-original-title="Delete" disabled="disabled" id="delete-link">'.
                         '<i class="fa fa-fw fa-trash-o"></i>'.
                     '</a>';
 
@@ -230,7 +232,7 @@ class LinkTest extends TestCase
     public function it_can_generate_detach_icon_link_for_modals_with_attributes()
     {
         $url      = '#detachModal';
-        $expected = '<a href="#detachModal" data-model-id="1" class="btn btn-xs btn-danger" data-toggle="tooltip" data-original-title="Detach">'.
+        $expected = '<a href="#detachModal" class="btn btn-xs btn-danger" data-toggle="tooltip" data-original-title="Detach" data-model-id="1">'.
                         '<i class="fa fa-fw fa-chain-broken"></i>'.
                     '</a>';
 
@@ -241,7 +243,7 @@ class LinkTest extends TestCase
     public function it_can_generate_detach_icon_link_for_modals_with_attributes_but_without_data_if_disabled()
     {
         $url      = '#detachModal';
-        $expected = '<a href="javascript:void(0);" id="detach-link" class="btn btn-xs btn-default" data-toggle="tooltip" data-original-title="Detach" disabled="disabled">'.
+        $expected = '<a href="javascript:void(0);" class="btn btn-xs btn-default" data-toggle="tooltip" data-original-title="Detach" disabled="disabled" id="detach-link">'.
                         '<i class="fa fa-fw fa-chain-broken"></i>'.
                     '</a>';
 
@@ -296,8 +298,8 @@ class LinkTest extends TestCase
         $url      = 'http://localhost/edit';
         $expected = '<a href="http://localhost/edit" class="btn btn-xs btn-warning"><i class="fa fa-fw fa-pencil"></i></a>';
 
-        $this->assertSame($expected, Link::editIcon($url, [], false)->toHtml());
-        $this->assertSame($expected, link_edit_icon($url, [], false)->toHtml());
+        $this->assertSame($expected, Link::editIcon($url, [], false)->tooltip(false)->toHtml());
+        $this->assertSame($expected, link_edit_icon($url, [], false)->tooltip(false)->toHtml());
     }
 
     /** @test */
@@ -346,8 +348,8 @@ class LinkTest extends TestCase
         $url      = 'http://localhost/show';
         $expected = '<a href="http://localhost/show" class="btn btn-xs btn-info"><i class="fa fa-fw fa-search"></i></a>';
 
-        $this->assertSame($expected, Link::showIcon($url, [], false)->toHtml());
-        $this->assertSame($expected, link_show_icon($url, [], false)->toHtml());
+        $this->assertSame($expected, Link::showIcon($url, [], false)->tooltip(false)->toHtml());
+        $this->assertSame($expected, link_show_icon($url, [], false)->tooltip(false)->toHtml());
     }
 
     /** @test */
