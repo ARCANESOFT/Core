@@ -44,8 +44,9 @@ trait ActivateLinks
             'disabled' => 'disabled',
         ];
 
-        return static::activateIcon( ! $active, $url, $attributes, $disabled)
-                     ->setAttribute($dataAttribute, $statuses[$active ? 'enabled' : 'disabled']);
+        return self::make( ! $active ? 'enable' : 'disable', $url, $attributes, $disabled)
+                   ->setAttribute($dataAttribute, $statuses[$active ? 'enabled' : 'disabled'])
+                   ->size('xs')->withTitle(false);
     }
 
     /**
@@ -60,16 +61,7 @@ trait ActivateLinks
      */
     public static function activateModalWithIcon($active, $url, array $attributes = [], $disabled = false)
     {
-        $dataAttribute = 'data-current-status';
-        $statuses      = [
-            'enabled'  => 'enabled',
-            'disabled' => 'disabled',
-        ];
-
-        return static::activateIcon( ! $active, $url, $attributes, $disabled)
-                     ->setAttribute($dataAttribute, $statuses[$active ? 'enabled' : 'disabled'])
-                     ->size('sm')
-                     ->withTitle(true)
-                     ->tooltip(false);
+        return static::activateModalIcon($active, $url, $attributes, $disabled)
+                     ->size('sm')->withTitle(true)->tooltip(false);
     }
 }
