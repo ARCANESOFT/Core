@@ -1,7 +1,6 @@
 <?php namespace Arcanesoft\Core\Helpers\UI;
 
 use Illuminate\Contracts\Support\Htmlable;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
 /**
@@ -9,11 +8,21 @@ use Illuminate\Support\Str;
  *
  * @package  Arcanesoft\Core\Helpers\UI
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
- *
- * @TODO: Refactoring
  */
 class Link implements Htmlable
 {
+    /* -----------------------------------------------------------------
+     |  Traits
+     | -----------------------------------------------------------------
+     */
+    use LinkTraits\ActivateLinks,
+        LinkTraits\AddLinks,
+        LinkTraits\DeleteLinks,
+        LinkTraits\DetachLinks,
+        LinkTraits\EditLinks,
+        LinkTraits\RestoreLinks,
+        LinkTraits\ShowLinks;
+
     /* -----------------------------------------------------------------
      |  Properties
      | -----------------------------------------------------------------
@@ -88,8 +97,11 @@ class Link implements Htmlable
     {
         $this->attributes = collect($attributes);
 
-        if ($this->disabled)
-            $this->cleanAttributes();
+        if ($this->disabled) {
+            $this->attributes = $this->attributes->reject(function ($value, $key) {
+                return Str::startsWith($key, ['data-']);
+            });
+        }
 
         return $this;
     }
@@ -105,15 +117,6 @@ class Link implements Htmlable
     public function setAttribute($key, $value)
     {
         $this->attributes->put($key, $value);
-
-        return $this;
-    }
-
-    protected function cleanAttributes()
-    {
-        $this->attributes = $this->attributes->reject(function ($value, $key) {
-            return Str::startsWith($key, ['data-']);
-        });
 
         return $this;
     }
@@ -187,6 +190,8 @@ class Link implements Htmlable
      | -----------------------------------------------------------------
      */
     /**
+     * Make link instance.
+     *
      * @param  string  $action
      * @param  string  $url
      * @param  array   $attributes
@@ -232,19 +237,7 @@ class Link implements Htmlable
      */
     protected function renderIcon()
     {
-        $icon = Arr::get([
-            'add'     => 'fa fa-fw fa-plus',
-            'delete'  => 'fa fa-fw fa-trash-o',
-            'detach'  => 'fa fa-fw fa-chain-broken',
-            'disable' => 'fa fa-fw fa-power-off',
-            'edit'    => 'fa fa-fw fa-pencil',
-            'enable'  => 'fa fa-fw fa-power-off',
-            'restore' => 'fa fa-fw fa-reply',
-            'show'    => 'fa fa-fw fa-search',
-            'update'  => 'fa fa-fw fa-pencil',
-        ], $this->action);
-
-        return '<i class="'.$icon.'"></i>';
+        return '<i class="'.$this->getLinkIcon().'"></i>';
     }
 
     /**
@@ -259,17 +252,15 @@ class Link implements Htmlable
         $attributes->put('class', $this->getLinkClass());
 
         if ($this->withTooltip) {
+            // This is for Bootstrap
             $attributes->put('data-toggle', 'tooltip');
             $attributes->put('data-original-title', $this->getActionTitle());
         }
 
-        if ($this->disabled) {
+        if ($this->disabled)
             $attributes->put('disabled', 'disabled');
-        }
 
-        $attributes = $attributes->merge($this->attributes);
-
-        return html()->attributes($attributes->toArray());
+        return html()->attributes($attributes->merge($this->attributes)->toArray());
     }
 
     /**
@@ -282,246 +273,35 @@ class Link implements Htmlable
         return implode(' ', array_filter(['btn', $this->getLinkSize(), $this->getLinkColor()]));
     }
 
+    /**
+     * Get the link color.
+     *
+     * @return string
+     */
     protected function getLinkColor()
     {
-        if ($this->disabled)
-            return 'btn-default';
+        $state = $this->disabled ? 'default' : $this->action;
 
-        return Arr::get([
-            'add'     => 'btn-primary',
-            'delete'  => 'btn-danger',
-            'detach'  => 'btn-danger',
-            'disable' => 'btn-inverse',
-            'edit'    => 'btn-warning',
-            'enable'  => 'btn-success',
-            'restore' => 'btn-primary',
-            'show'    => 'btn-info',
-            'update'  => 'btn-warning',
-        ], $this->action);
+        return config("arcanesoft.core.ui.links.colors.{$state}");
     }
 
+    /**
+     * Get the link size.
+     *
+     * @return string|null
+     */
     protected function getLinkSize()
     {
-        return Arr::get([
-            'lg' => 'btn-lg',
-            'md' => '',
-            'sm' => 'btn-sm',
-            'xs' => 'btn-xs',
-        ], $this->size);
-    }
-
-    /* -----------------------------------------------------------------
-     |  Helpers Methods
-     | -----------------------------------------------------------------
-     */
-    /**
-     * Generate activate icon link.
-     *
-     * @param  bool    $active
-     * @param  string  $url
-     * @param  array   $attributes
-     * @param  bool    $disabled
-     *
-     * @return self
-     */
-    public static function activateIcon($active, $url, array $attributes = [], $disabled = false)
-    {
-        return self::make($active ? 'enable' : 'disable', $url, $attributes, $disabled)
-                   ->size('xs')
-                   ->withTitle(false)
-                   ->icon(true);
+        return config("arcanesoft.core.ui.links.sizes.{$this->size}");
     }
 
     /**
-     * Generate activate icon link for modals (reverse button based on active state).
+     * Get the icon.
      *
-     * @param  bool    $active
-     * @param  string  $url
-     * @param  array   $attributes
-     * @param  bool    $disabled
-     *
-     * @return self
+     * @return string|null
      */
-    public static function activateModalIcon($active, $url, array $attributes = [], $disabled = false)
+    protected function getLinkIcon()
     {
-        $dataAttribute = 'data-current-status';
-        $statuses      = [
-            'enabled'  => 'enabled',
-            'disabled' => 'disabled',
-        ];
-
-        return static::activateIcon( ! $active, $url, $attributes, $disabled)
-                     ->setAttribute($dataAttribute, $statuses[$active ? 'enabled' : 'disabled']);
-    }
-
-    /**
-     * Generate activate link with icon for modals (reverse button based on active state).
-     *
-     * @param  bool    $active
-     * @param  string  $url
-     * @param  array   $attributes
-     * @param  bool    $disabled
-     *
-     * @return self
-     */
-    public static function activateModalWithIcon($active, $url, array $attributes = [], $disabled = false)
-    {
-        $dataAttribute = 'data-current-status';
-        $statuses      = [
-            'enabled'  => 'enabled',
-            'disabled' => 'disabled',
-        ];
-
-        return static::activateIcon( ! $active, $url, $attributes, $disabled)
-                     ->setAttribute($dataAttribute, $statuses[$active ? 'enabled' : 'disabled'])
-                     ->size('sm')
-                     ->withTitle(true)
-                     ->tooltip(false);
-    }
-
-    /**
-     * Generate add icon link.
-     *
-     * @param  string  $url
-     * @param  array   $attributes
-     * @param  bool    $disabled
-     *
-     * @return self
-     */
-    public static function addIcon($url, array $attributes = [], $disabled = false)
-    {
-        return self::make('add', $url, $attributes, $disabled)
-                   ->size('xs')
-                   ->withTitle(false);
-    }
-
-    /**
-     * Generate delete icon link for modals.
-     *
-     * @param  string  $url
-     * @param  array   $attributes
-     * @param  bool    $disabled
-     *
-     * @return self
-     */
-    public static function deleteModalIcon($url, array $attributes = [], $disabled = false)
-    {
-        return self::make('delete', $url, $attributes, $disabled)
-                   ->size('xs')
-                   ->withTitle(false);
-    }
-
-    /**
-     * Generate delete link with icon for modals.
-     *
-     * @param  string  $url
-     * @param  array   $attributes
-     * @param  bool    $disabled
-     *
-     * @return self
-     */
-    public static function deleteModalWithIcon($url, array $attributes = [], $disabled = false)
-    {
-        return static::make('delete', $url, $attributes, $disabled)
-                     ->size('sm')
-                     ->withTitle(true)
-                     ->tooltip(false);
-    }
-
-    /**
-     * Generate detach icon link for modals.
-     *
-     * @param  string  $url
-     * @param  array   $attributes
-     * @param  bool    $disabled
-     *
-     * @return self
-     */
-    public static function detachModalIcon($url, array $attributes = [], $disabled = false)
-    {
-        return self::make('detach', $url, $attributes, $disabled)
-                   ->size('xs')
-                   ->withTitle(false);
-    }
-
-    /**
-     * Generate edit icon link.
-     *
-     * @param  string  $url
-     * @param  array   $attributes
-     * @param  bool    $disabled
-     *
-     * @return self
-     */
-    public static function editIcon($url, array $attributes = [], $disabled = false)
-    {
-        return self::make('edit', $url, $attributes, $disabled)
-                   ->size('xs')
-                   ->withTitle(false);
-    }
-
-    /**
-     * Generate edit link with icon.
-     *
-     * @param  string  $url
-     * @param  array   $attributes
-     * @param  bool    $disabled
-     *
-     * @return self
-     */
-    public static function editWithIcon($url, array $attributes = [], $disabled = false)
-    {
-        return self::make('edit', $url, $attributes, $disabled)
-                   ->size('sm')
-                   ->tooltip(false);
-    }
-
-    /**
-     * Generate restore icon link for modals.
-     *
-     * @param  string  $url
-     * @param  array   $attributes
-     * @param  bool    $disabled
-     *
-     * @return self
-     */
-    public static function restoreModalIcon($url, array $attributes = [], $disabled = false)
-    {
-        return self::make('restore', $url, $attributes, $disabled)
-                   ->size('xs')
-                   ->withTitle(false);
-    }
-
-    /**
-     * Generate restore link with icon for modals.
-     *
-     * @param  string  $url
-     * @param  array   $attributes
-     * @param  bool    $disabled
-     *
-     * @return self
-     */
-    public static function restoreModalWithIcon($url, array $attributes = [], $disabled = false)
-    {
-        return static::make('restore', $url, $attributes, $disabled)
-                     ->size('sm')
-                     ->withTitle(true)
-                     ->tooltip(false);
-    }
-
-    /**
-     * Generate show icon link.
-     *
-     * @param  string  $url
-     * @param  array   $attributes
-     * @param  bool    $disabled
-     *
-     * @return self
-     */
-    public static function showIcon($url, array $attributes = [], $disabled = false)
-    {
-        return self::make('show', $url, $attributes, $disabled)
-                   ->size('xs')
-                   ->withTitle(false);
+        return config("arcanesoft.core.ui.links.icons.{$this->action}");
     }
 }
