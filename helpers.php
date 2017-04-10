@@ -1,7 +1,48 @@
 <?php
 
+use Arcanesoft\Core\Helpers\UI\Button;
 use Arcanesoft\Core\Helpers\UI\Label;
 use Arcanesoft\Core\Helpers\UI\Link;
+
+/* -----------------------------------------------------------------
+ |  Buttons
+ | -----------------------------------------------------------------
+ */
+
+if ( ! function_exists('ui_button')) {
+    /**
+     * Generate a link.
+     *
+     * @param  string  $action
+     * @param  string  $type
+     * @param  array   $attributes
+     * @param  bool    $disabled
+     *
+     * @return \Arcanesoft\Core\Helpers\UI\Button
+     */
+    function ui_button($action, $type = 'button', array $attributes = [], $disabled = false) {
+        return Button::make($action, $type, $attributes, $disabled)
+                     ->size('sm');
+    }
+}
+
+if ( ! function_exists('ui_button_icon')) {
+    /**
+     * Generate a small icon link.
+     *
+     * @param  string  $action
+     * @param  string  $type
+     * @param  array   $attributes
+     * @param  bool    $disabled
+     *
+     * @return \Arcanesoft\Core\Helpers\UI\Button
+     */
+    function ui_button_icon($action, $type = 'button', array $attributes = [], $disabled = false) {
+        return Button::make($action, $type, $attributes, $disabled)
+                     ->withTooltip(true)
+                     ->size('xs');
+    }
+}
 
 /* -----------------------------------------------------------------
  |  Labels

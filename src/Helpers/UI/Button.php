@@ -4,12 +4,12 @@ use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\Str;
 
 /**
- * Class     Link
+ * Class     Button
  *
  * @package  Arcanesoft\Core\Helpers\UI
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
-class Link implements Htmlable
+class Button implements Htmlable
 {
     /* -----------------------------------------------------------------
      |  Properties
@@ -19,7 +19,7 @@ class Link implements Htmlable
     protected $action;
 
     /** @var string */
-    protected $url;
+    protected $type;
 
     /** @var \Illuminate\Support\Collection */
     protected $attributes;
@@ -44,17 +44,17 @@ class Link implements Htmlable
      | -----------------------------------------------------------------
      */
     /**
-     * LinkElement constructor.
+     * Button constructor.
      *
      * @param  string  $action
-     * @param  string  $url
+     * @param  string  $type
      * @param  array   $attributes
      * @param  bool    $disabled
      */
-    public function __construct($action, $url, array $attributes = [], $disabled = false)
+    public function __construct($action, $type = 'button', array $attributes = [], $disabled)
     {
-        $this->action     = $action;
-        $this->url        = $url;
+        $this->action = $action;
+        $this->setType($type);
         $this->setAttributes($attributes);
         $this->setDisabled($disabled);
     }
@@ -63,6 +63,20 @@ class Link implements Htmlable
      |  Getters & Setters
      | -----------------------------------------------------------------
      */
+    /**
+     * Set the button type.
+     *
+     * @param  string  $type
+     *
+     * @return self
+     */
+    public function setType($type)
+    {
+        $this->type = in_array($type = strtolower($type), ['button', 'submit', 'reset']) ? $type : 'button';
+
+        return $this;
+    }
+
     /**
      * Set the attributes.
      *
@@ -183,18 +197,18 @@ class Link implements Htmlable
      | -----------------------------------------------------------------
      */
     /**
-     * Make link instance.
+     * Make a button instance.
      *
      * @param  string  $action
-     * @param  string  $url
+     * @param  string  $type
      * @param  array   $attributes
      * @param  bool    $disabled
      *
      * @return self
      */
-    public static function make($action, $url, array $attributes = [], $disabled = false)
+    public static function make($action, $type = 'button', array $attributes = [], $disabled = false)
     {
-        return new static($action, $url, $attributes, $disabled);
+        return new static($action, $type, $attributes, $disabled);
     }
 
     /**
@@ -204,7 +218,7 @@ class Link implements Htmlable
      */
     public function toHtml()
     {
-        return '<a'.$this->renderAttributes().'>'.$this->renderValue().'</a>';
+        return '<button'.$this->renderAttributes().'>'.$this->renderValue().'</button>';
     }
 
     /**
@@ -229,7 +243,7 @@ class Link implements Htmlable
     protected function renderAttributes()
     {
         $attributes = collect();
-        $attributes->put('href',  $this->disabled ? 'javascript:void(0);' : $this->url);
+        $attributes->put('type', $this->type);
         $attributes->put('class', $this->getStyleClass());
 
         if ($this->withTooltip) {
@@ -238,8 +252,10 @@ class Link implements Htmlable
             $attributes->put('data-original-title', $this->getTitle());
         }
 
-        if ($this->disabled)
+        if ($this->disabled) {
+            $attributes->put('type', 'button');
             $attributes->put('disabled', 'disabled');
+        }
 
         return html()->attributes($attributes->merge($this->attributes)->toArray());
     }
@@ -260,13 +276,23 @@ class Link implements Htmlable
     }
 
     /**
-     * Render the icon.
+     * Get the button class.
      *
      * @return string
      */
-    protected function renderIcon()
+    protected function getStyleClass()
     {
-        return '<i class="'.$this->getIcon().'"></i>';
+        return implode(' ', array_filter(['btn', $this->getSize(), $this->getColor()]));
+    }
+
+    /**
+     * Get the button size.
+     *
+     * @return string|null
+     */
+    protected function getSize()
+    {
+        return $this->getConfig("sizes.{$this->size}");
     }
 
     /**
@@ -280,26 +306,6 @@ class Link implements Htmlable
     }
 
     /**
-     * Get the link class.
-     *
-     * @return string
-     */
-    protected function getStyleClass()
-    {
-        return implode(' ', array_filter(['btn', $this->getSize(), $this->getColor()]));
-    }
-
-    /**
-     * Get the link size.
-     *
-     * @return string|null
-     */
-    protected function getSize()
-    {
-        return $this->getConfig("sizes.{$this->size}");
-    }
-
-    /**
      * Get the link color.
      *
      * @return string
@@ -309,6 +315,16 @@ class Link implements Htmlable
         $state = $this->disabled ? 'default' : $this->action;
 
         return $this->getConfig("colors.{$state}");
+    }
+
+    /**
+     * Render the icon.
+     *
+     * @return string
+     */
+    protected function renderIcon()
+    {
+        return '<i class="'.$this->getIcon().'"></i>';
     }
 
     /**
@@ -325,12 +341,11 @@ class Link implements Htmlable
      * Get the value from config.
      *
      * @param  string  $key
-     * @param  mixed   $default
      *
      * @return mixed
      */
-    protected function getConfig($key, $default = null)
+    protected function getConfig($key)
     {
-        return config("arcanesoft.core.ui.links.{$key}", $default);
+        return config("arcanesoft.core.ui.buttons.{$key}");
     }
 }
