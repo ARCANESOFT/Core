@@ -101,185 +101,36 @@ if ( ! function_exists('label_trashed_status')) {
  | -----------------------------------------------------------------
  */
 
-if ( ! function_exists('link_activate_icon')) {
+if ( ! function_exists('ui_link')) {
     /**
-     * Generate activate icon link.
+     * Generate a link.
      *
-     * @param  bool    $active
+     * @param  string  $action
      * @param  string  $url
      * @param  array   $attributes
      * @param  bool    $disabled
      *
-     * @return Link
+     * @return \Arcanesoft\Core\Helpers\UI\Link
      */
-    function link_activate_icon($active, $url, array $attributes = [], $disabled = false) {
-        return Link::activateIcon($active, $url, $attributes, $disabled);
+    function ui_link($action, $url, array $attributes = [], $disabled = false) {
+        return Link::make($action, $url, $attributes, $disabled)->size('sm');
     }
 }
 
-if ( ! function_exists('link_activate_modal_icon')) {
+if ( ! function_exists('ui_link_icon')) {
     /**
-     * Generate activate icon link for modals (reverse button based on active state).
+     * Generate a small icon link.
      *
-     * @param  bool    $active
+     * @param  string  $action
      * @param  string  $url
      * @param  array   $attributes
      * @param  bool    $disabled
      *
-     * @return Link
+     * @return \Arcanesoft\Core\Helpers\UI\Link
      */
-    function link_activate_modal_icon($active, $url, array $attributes = [], $disabled = false) {
-        return Link::activateModalIcon($active, $url, $attributes, $disabled);
-    }
-}
-
-if ( ! function_exists('link_add_icon')) {
-    /**
-     * Generate add icon link.
-     *
-     * @param  string  $url
-     * @param  array   $attributes
-     * @param  bool    $disabled
-     *
-     * @return Link
-     */
-    function link_add_icon($url, array $attributes = [], $disabled = false) {
-        return Link::addIcon($url, $attributes, $disabled);
-    }
-}
-
-if ( ! function_exists('link_delete_modal_icon')) {
-    /**
-     * Generate delete icon link for modals.
-     *
-     * @param  string  $url
-     * @param  array   $attributes
-     * @param  bool    $disabled
-     *
-     * @return Link
-     */
-    function link_delete_modal_icon($url, array $attributes = [], $disabled = false) {
-        return Link::deleteModalIcon($url, $attributes, $disabled);
-    }
-}
-
-if ( ! function_exists('link_delete_modal_with_icon')) {
-    /**
-     * Generate delete link with icon for modals.
-     *
-     * @param  string  $url
-     * @param  array   $attributes
-     * @param  bool    $disabled
-     *
-     * @return Link
-     */
-    function link_delete_modal_with_icon($url, array $attributes = [], $disabled = false) {
-        return Link::deleteModalWithIcon($url, $attributes, $disabled);
-    }
-}
-
-if ( ! function_exists('link_activate_modal_with_icon')) {
-    /**
-     * Generate activate link with icon for modals (reverse button based on active state).
-     *
-     * @param  bool    $active
-     * @param  string  $url
-     * @param  array   $attributes
-     * @param  bool    $disabled
-     *
-     * @return Link
-     */
-    function link_activate_modal_with_icon($active, $url, array $attributes = [], $disabled = false) {
-        return Link::activateModalWithIcon($active, $url, $attributes, $disabled);
-    }
-}
-
-if ( ! function_exists('link_detach_modal_icon')) {
-    /**
-     * Generate detach icon link for modals.
-     *
-     * @param  string  $url
-     * @param  array   $attributes
-     * @param  bool    $disabled
-     *
-     * @return Link
-     */
-    function link_detach_modal_icon($url, array $attributes = [], $disabled = false) {
-        return Link::detachModalIcon($url, $attributes, $disabled);
-    }
-}
-
-if ( ! function_exists('link_edit_icon')) {
-    /**
-     * Generate edit icon link.
-     *
-     * @param  string  $url
-     * @param  array   $attributes
-     * @param  bool    $disabled
-     *
-     * @return Link
-     */
-    function link_edit_icon($url, array $attributes = [], $disabled = false) {
-        return Link::editIcon($url, $attributes, $disabled);
-    }
-}
-
-if ( ! function_exists('link_edit_with_icon')) {
-    /**
-     * Generate edit link with icon.
-     *
-     * @param  string  $url
-     * @param  array   $attributes
-     * @param  bool    $disabled
-     *
-     * @return Link
-     */
-    function link_edit_with_icon($url, array $attributes = [], $disabled = false) {
-        return Link::editWithIcon($url, $attributes, $disabled);
-    }
-}
-
-if ( ! function_exists('link_restore_modal_icon')) {
-    /**
-     * Generate restore icon link for modals.
-     *
-     * @param  string  $url
-     * @param  array   $attributes
-     * @param  bool    $disabled
-     *
-     * @return Link
-     */
-    function link_restore_modal_icon($url, array $attributes = [], $disabled = false) {
-        return Link::restoreModalIcon($url, $attributes, $disabled);
-    }
-}
-
-if ( ! function_exists('link_restore_modal_with_icon')) {
-    /**
-     * Generate restore link with icon for modals.
-     *
-     * @param  string  $url
-     * @param  array   $attributes
-     * @param  bool    $disabled
-     *
-     * @return Link
-     */
-    function link_restore_modal_with_icon($url, array $attributes = [], $disabled = false) {
-        return Link::restoreModalWithIcon($url, $attributes, $disabled);
-    }
-}
-
-if ( ! function_exists('link_show_icon')) {
-    /**
-     * Generate show icon link.
-     *
-     * @param  string  $url
-     * @param  array   $attributes
-     * @param  bool    $disabled
-     *
-     * @return Link
-     */
-    function link_show_icon($url, array $attributes = [], $disabled = false) {
-        return Link::showIcon($url, $attributes, $disabled);
+    function ui_link_icon($action, $url, array $attributes = [], $disabled = false) {
+        return Link::make($action, $url, $attributes, $disabled)
+                   ->withTooltip(true)
+                   ->size('xs');
     }
 }

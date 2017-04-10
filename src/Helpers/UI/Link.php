@@ -12,18 +12,6 @@ use Illuminate\Support\Str;
 class Link implements Htmlable
 {
     /* -----------------------------------------------------------------
-     |  Traits
-     | -----------------------------------------------------------------
-     */
-    use LinkTraits\ActivateLinks,
-        LinkTraits\AddLinks,
-        LinkTraits\DeleteLinks,
-        LinkTraits\DetachLinks,
-        LinkTraits\EditLinks,
-        LinkTraits\RestoreLinks,
-        LinkTraits\ShowLinks;
-
-    /* -----------------------------------------------------------------
      |  Properties
      | -----------------------------------------------------------------
      */
@@ -49,7 +37,7 @@ class Link implements Htmlable
     protected $withIcon = true;
 
     /** @var bool */
-    protected $withTooltip = true;
+    protected $withTooltip = false;
 
     /* -----------------------------------------------------------------
      |  Constructor
@@ -65,11 +53,10 @@ class Link implements Htmlable
      */
     public function __construct($action, $url, array $attributes = [], $disabled = false)
     {
-        $this->disabled   = $disabled;
         $this->action     = $action;
         $this->url        = $url;
-
         $this->setAttributes($attributes);
+        $this->setDisabled($disabled);
     }
 
     /* -----------------------------------------------------------------
@@ -97,12 +84,6 @@ class Link implements Htmlable
     {
         $this->attributes = collect($attributes);
 
-        if ($this->disabled) {
-            $this->attributes = $this->attributes->reject(function ($value, $key) {
-                return Str::startsWith($key, ['data-']);
-            });
-        }
-
         return $this;
     }
 
@@ -117,6 +98,26 @@ class Link implements Htmlable
     public function setAttribute($key, $value)
     {
         $this->attributes->put($key, $value);
+
+        return $this;
+    }
+
+    /**
+     * Set disabled state.
+     *
+     * @param  bool  $disabled
+     *
+     * @return self
+     */
+    public function setDisabled($disabled)
+    {
+        $this->disabled = (bool) $disabled;
+
+        if ($this->disabled) {
+            $this->attributes = $this->attributes->reject(function ($value, $key) {
+                return Str::startsWith($key, ['data-']);
+            });
+        }
 
         return $this;
     }
@@ -150,13 +151,13 @@ class Link implements Htmlable
     /**
      * Show/Hide the icon.
      *
-     * @var  bool  $icon
+     * @var  bool  $withIcon
      *
      * @return self
      */
-    public function icon($withIcon)
+    public function withIcon($withIcon)
     {
-        $this->withIcon = $withIcon;
+        $this->withIcon = (bool) $withIcon;
 
         return $this;
     }
@@ -168,9 +169,9 @@ class Link implements Htmlable
      *
      * @return self
      */
-    public function tooltip($withTooltip)
+    public function withTooltip($withTooltip)
     {
-        $this->withTooltip = $withTooltip;
+        $this->withTooltip = (bool) $withTooltip;
 
         return $this;
     }
@@ -182,7 +183,7 @@ class Link implements Htmlable
      */
     public function onlyIcon()
     {
-        return $this->icon(true)->tooltip(true);
+        return $this->withIcon(true)->withTooltip(true);
     }
 
     /* -----------------------------------------------------------------
@@ -204,10 +205,6 @@ class Link implements Htmlable
         return new static($action, $url, $attributes, $disabled);
     }
 
-    /* -----------------------------------------------------------------
-     |  Other Functions
-     | -----------------------------------------------------------------
-     */
     /**
      * Get content as a string of HTML.
      *
@@ -219,15 +216,32 @@ class Link implements Htmlable
     }
 
     /**
+     * Get the string content for the link instance.
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->toHtml();
+    }
+
+    /* -----------------------------------------------------------------
+     |  Other Functions
+     | -----------------------------------------------------------------
+     */
+    /**
      * Render the link value.
      *
      * @return string
      */
     protected function renderValue()
     {
-        return ($this->withTooltip || ! $this->withTitle)
-            ? $this->renderIcon()
-            : $this->renderIcon().' '.$this->getActionTitle();
+        if ($this->withTooltip || ! $this->withTitle)
+            return $this->renderIcon();
+
+        return $this->withIcon
+            ? $this->renderIcon().' '.$this->getActionTitle()
+            : $this->getActionTitle();
     }
 
     /**
