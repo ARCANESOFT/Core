@@ -107,6 +107,54 @@ class LinkTest extends TestCase
     }
 
     /** @test */
+    public function it_can_forget_one_attribute()
+    {
+        $link = Link::make('add', '#')->setAttributes([
+            'id'          => 'link-id',
+            'class'       => 'button',
+            'data-toggle' => 'button',
+        ]);
+
+        $expected = '<a href="#" class="button" id="link-id" data-toggle="button">'.
+                        '<i class="fa fa-fw fa-plus"></i> Add'.
+                    '</a>';
+
+        $this->assertSame($expected, $link->toHtml());
+
+        $link->forgetAttribute('data-toggle');
+
+        $expected = '<a href="#" class="button" id="link-id">'.
+                        '<i class="fa fa-fw fa-plus"></i> Add'.
+                    '</a>';
+
+        $this->assertSame($expected, $link->toHtml());
+    }
+
+    /** @test */
+    public function it_can_forget_multiple_attributes()
+    {
+        $button = Link::make('add', '#')->setAttributes([
+            'id'          => 'button-id',
+            'class'       => 'button',
+            'data-toggle' => 'button',
+        ]);
+
+        $expected = '<a href="#" class="button" id="button-id" data-toggle="button">'.
+                        '<i class="fa fa-fw fa-plus"></i> Add'.
+                    '</a>';
+
+        $this->assertSame($expected, $button->toHtml());
+
+        $button->forgetAttribute(['id', 'data-toggle']);
+
+        $expected = '<a href="#" class="button">'.
+                        '<i class="fa fa-fw fa-plus"></i> Add'.
+                    '</a>';
+
+        $this->assertSame($expected, $button->toHtml());
+    }
+
+    /** @test */
     public function it_can_generate_disabled_link()
     {
         $url  = 'http://localhost/add';
@@ -213,5 +261,46 @@ class LinkTest extends TestCase
                 );
             }
         }
+    }
+
+    /** @test */
+    public function it_can_generate_with_loading_text_attribute()
+    {
+        $link     = Link::make('add', '#')->withLoadingText();
+        $expected = '<a href="#" class="btn btn-primary" data-loading-text="Loading&amp;hellip;">'.
+                        '<i class="fa fa-fw fa-plus"></i> Add'.
+                    '</a>';
+
+        $this->assertSame($expected, $link->toHtml());
+    }
+
+    /** @test */
+    public function it_can_append_custom_style_classes()
+    {
+        $link   = Link::make('add', '#');
+
+        $link->appendClass('btn-default');
+
+        $expected = '<a href="#" class="btn btn-primary btn-default">'.
+                        '<i class="fa fa-fw fa-plus"></i> Add'.
+                    '</a>';
+
+        $this->assertSame($expected, $link->toHtml());
+    }
+
+    /** @test */
+    public function it_can_append_custom_style_classes_without_duplication()
+    {
+        $link   = Link::make('add', '#');
+
+        $link->appendClass('btn-primary');
+        $link->appendClass('btn-default');
+        $link->appendClass('btn-default');
+
+        $expected = '<a href="#" class="btn btn-primary btn-default">'.
+                        '<i class="fa fa-fw fa-plus"></i> Add'.
+                    '</a>';
+
+        $this->assertSame($expected, $link->toHtml());
     }
 }

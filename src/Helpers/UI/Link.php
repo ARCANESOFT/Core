@@ -110,16 +110,6 @@ class Link extends AbstractClickable
     }
 
     /**
-     * Get the link class.
-     *
-     * @return string
-     */
-    protected function getStyleClass()
-    {
-        return implode(' ', array_filter(['btn', $this->getSize(), $this->getColor()]));
-    }
-
-    /**
      * Get the value from config.
      *
      * @param  string  $key

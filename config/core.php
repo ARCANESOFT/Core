@@ -53,6 +53,7 @@ return [
                 'default' => 'btn-default', // For disabled state
 
                 'add'     => 'btn-primary',
+                'cancel'  => 'btn-default',
                 'delete'  => 'btn-danger',
                 'detach'  => 'btn-danger',
                 'disable' => 'btn-inverse',
@@ -88,6 +89,7 @@ return [
                 'default' => 'btn-default', // For disabled state
 
                 'add'     => 'btn-primary',
+                'cancel'  => 'btn-default',
                 'delete'  => 'btn-danger',
                 'detach'  => 'btn-danger',
                 'disable' => 'btn-inverse',

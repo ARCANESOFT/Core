@@ -112,16 +112,6 @@ class Button extends AbstractClickable
     }
 
     /**
-     * Get the button class.
-     *
-     * @return string
-     */
-    protected function getStyleClass()
-    {
-        return implode(' ', array_filter(['btn', $this->getSize(), $this->getColor()]));
-    }
-
-    /**
      * Get the value from config.
      *
      * @param  string  $key

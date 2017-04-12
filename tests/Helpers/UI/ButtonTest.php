@@ -101,6 +101,54 @@ class ButtonTest extends TestCase
     }
 
     /** @test */
+    public function it_can_forget_one_attribute()
+    {
+        $button = Button::make('add')->setAttributes([
+            'id'          => 'button-id',
+            'class'       => 'button',
+            'data-toggle' => 'button',
+        ]);
+
+        $expected = '<button type="button" class="button" id="button-id" data-toggle="button">'.
+                        '<i class="fa fa-fw fa-plus"></i> Add'.
+                    '</button>';
+
+        $this->assertSame($expected, $button->toHtml());
+
+        $button->forgetAttribute('data-toggle');
+
+        $expected = '<button type="button" class="button" id="button-id">'.
+                        '<i class="fa fa-fw fa-plus"></i> Add'.
+                    '</button>';
+
+        $this->assertSame($expected, $button->toHtml());
+    }
+
+    /** @test */
+    public function it_can_forget_multiple_attributes()
+    {
+        $button = Button::make('add')->setAttributes([
+            'id'          => 'button-id',
+            'class'       => 'button',
+            'data-toggle' => 'button',
+        ]);
+
+        $expected = '<button type="button" class="button" id="button-id" data-toggle="button">'.
+                        '<i class="fa fa-fw fa-plus"></i> Add'.
+                    '</button>';
+
+        $this->assertSame($expected, $button->toHtml());
+
+        $button->forgetAttribute(['id', 'data-toggle']);
+
+        $expected = '<button type="button" class="button">'.
+                        '<i class="fa fa-fw fa-plus"></i> Add'.
+                    '</button>';
+
+        $this->assertSame($expected, $button->toHtml());
+    }
+
+    /** @test */
     public function it_can_generate_disabled_button()
     {
         $button = Button::make('add', 'submit', [], true);
@@ -201,5 +249,46 @@ class ButtonTest extends TestCase
                 );
             }
         }
+    }
+
+    /** @test */
+    public function it_can_generate_with_loading_text_attribute()
+    {
+        $button   = Button::make('add')->withLoadingText();
+        $expected = '<button type="button" class="btn btn-primary" data-loading-text="Loading&amp;hellip;">'.
+                        '<i class="fa fa-fw fa-plus"></i> Add'.
+                    '</button>';
+
+        $this->assertSame($expected, $button->toHtml());
+    }
+
+    /** @test */
+    public function it_can_append_custom_style_classes()
+    {
+        $button   = Button::make('add');
+
+        $button->appendClass('btn-default');
+
+        $expected = '<button type="button" class="btn btn-primary btn-default">'.
+                        '<i class="fa fa-fw fa-plus"></i> Add'.
+                    '</button>';
+
+        $this->assertSame($expected, $button->toHtml());
+    }
+
+    /** @test */
+    public function it_can_append_custom_style_classes_without_duplication()
+    {
+        $button   = Button::make('add');
+
+        $button->appendClass('btn-primary');
+        $button->appendClass('btn-default');
+        $button->appendClass('btn-default');
+
+        $expected = '<button type="button" class="btn btn-primary btn-default">'.
+                        '<i class="fa fa-fw fa-plus"></i> Add'.
+                    '</button>';
+
+        $this->assertSame($expected, $button->toHtml());
     }
 }

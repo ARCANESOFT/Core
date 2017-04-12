@@ -36,6 +36,9 @@ abstract class AbstractClickable implements Htmlable
     /** @var bool */
     protected $withTooltip = false;
 
+    /** @var array */
+    protected $extraClass = [];
+
     /* -----------------------------------------------------------------
      |  Getters & Setters
      | -----------------------------------------------------------------
@@ -84,6 +87,20 @@ abstract class AbstractClickable implements Htmlable
     }
 
     /**
+     * Append a style class.
+     *
+     * @param  string  $class
+     *
+     * @return \Arcanesoft\Core\Helpers\UI\AbstractClickable
+     */
+    public function appendClass($class)
+    {
+        $this->extraClass = array_merge($this->extraClass, explode(' ', $class));
+
+        return $this;
+    }
+
+    /**
      * Set disabled state.
      *
      * @param  bool  $disabled
@@ -99,6 +116,20 @@ abstract class AbstractClickable implements Htmlable
                 return Str::startsWith($key, ['data-']);
             });
         }
+
+        return $this;
+    }
+
+    /**
+     * Forget attribute(s).
+     *
+     * @param  string|array  $attributes
+     *
+     * @return \Arcanesoft\Core\Helpers\UI\AbstractClickable
+     */
+    public function forgetAttribute($attributes)
+    {
+        $this->attributes->forget($attributes);
 
         return $this;
     }
@@ -169,6 +200,16 @@ abstract class AbstractClickable implements Htmlable
         return $this->withIcon(true)->withTooltip(true);
     }
 
+    /**
+     * Add loading text attribute.
+     *
+     * @return \Arcanesoft\Core\Helpers\UI\AbstractClickable
+     */
+    public function withLoadingText()
+    {
+        return $this->setAttribute('data-loading-text', Str::ucfirst(trans('core::generals.loading')));
+    }
+
     /* -----------------------------------------------------------------
      |  Main Methods
      | -----------------------------------------------------------------
@@ -233,15 +274,29 @@ abstract class AbstractClickable implements Htmlable
     }
 
     /**
-     * Get the link color.
+     * Get the button class.
      *
      * @return string
      */
-    protected function getColor()
+    protected function getStyleClass()
     {
-        $state = $this->disabled ? 'default' : $this->action;
+        $classes = array_merge([
+            $this->getBaseStyleClass(),
+            $this->getSize(),
+            $this->getColor(),
+        ], $this->extraClass);
 
-        return $this->getConfig("colors.{$state}");
+        return implode(' ', array_filter(array_unique($classes, SORT_STRING)));
+    }
+
+    /**
+     * Get the base style class.
+     *
+     * @return string
+     */
+    protected function getBaseStyleClass()
+    {
+        return 'btn';
     }
 
     /**
@@ -252,6 +307,18 @@ abstract class AbstractClickable implements Htmlable
     protected function getSize()
     {
         return $this->getConfig("sizes.{$this->size}");
+    }
+
+    /**
+     * Get the link color.
+     *
+     * @return string
+     */
+    protected function getColor()
+    {
+        $state = $this->disabled ? 'default' : $this->action;
+
+        return $this->getConfig("colors.{$state}");
     }
 
     /**
