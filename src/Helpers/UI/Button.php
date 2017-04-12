@@ -1,36 +1,36 @@
 <?php namespace Arcanesoft\Core\Helpers\UI;
 
 /**
- * Class     Link
+ * Class     Button
  *
  * @package  Arcanesoft\Core\Helpers\UI
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
-class Link extends AbstractClickable
+class Button extends AbstractClickable
 {
     /* -----------------------------------------------------------------
      |  Properties
      | -----------------------------------------------------------------
      */
     /** @var string */
-    protected $url;
+    protected $type;
 
     /* -----------------------------------------------------------------
      |  Constructor
      | -----------------------------------------------------------------
      */
     /**
-     * LinkElement constructor.
+     * Button constructor.
      *
      * @param  string  $action
-     * @param  string  $url
+     * @param  string  $type
      * @param  array   $attributes
      * @param  bool    $disabled
      */
-    public function __construct($action, $url, array $attributes = [], $disabled = false)
+    public function __construct($action, $type = 'button', array $attributes = [], $disabled)
     {
         $this->setAction($action);
-        $this->setUrl($url);
+        $this->setType($type);
         $this->setAttributes($attributes);
         $this->setDisabled($disabled);
     }
@@ -40,15 +40,15 @@ class Link extends AbstractClickable
      | -----------------------------------------------------------------
      */
     /**
-     * Set the link url.
+     * Set the button type.
      *
-     * @param  string  $url
+     * @param  string  $type
      *
-     * @return \Arcanesoft\Core\Helpers\UI\Link
+     * @return self
      */
-    public function setUrl($url)
+    public function setType($type)
     {
-        $this->url = $url;
+        $this->type = in_array($type = strtolower($type), ['button', 'submit', 'reset']) ? $type : 'button';
 
         return $this;
     }
@@ -58,18 +58,18 @@ class Link extends AbstractClickable
      | -----------------------------------------------------------------
      */
     /**
-     * Make link instance.
+     * Make a button instance.
      *
      * @param  string  $action
-     * @param  string  $url
+     * @param  string  $type
      * @param  array   $attributes
      * @param  bool    $disabled
      *
      * @return self
      */
-    public static function make($action, $url, array $attributes = [], $disabled = false)
+    public static function make($action, $type = 'button', array $attributes = [], $disabled = false)
     {
-        return new static($action, $url, $attributes, $disabled);
+        return new static($action, $type, $attributes, $disabled);
     }
 
     /**
@@ -79,7 +79,7 @@ class Link extends AbstractClickable
      */
     public function toHtml()
     {
-        return '<a'.$this->renderAttributes().'>'.$this->renderValue().'</a>';
+        return '<button'.$this->renderAttributes().'>'.$this->renderValue().'</button>';
     }
 
     /* -----------------------------------------------------------------
@@ -94,7 +94,7 @@ class Link extends AbstractClickable
     protected function renderAttributes()
     {
         $attributes = collect();
-        $attributes->put('href',  $this->disabled ? 'javascript:void(0);' : $this->url);
+        $attributes->put('type', $this->type);
         $attributes->put('class', $this->getStyleClass());
 
         if ($this->withTooltip) {
@@ -103,8 +103,10 @@ class Link extends AbstractClickable
             $attributes->put('data-original-title', $this->getTitle());
         }
 
-        if ($this->disabled)
+        if ($this->disabled) {
+            $attributes->put('type', 'button');
             $attributes->put('disabled', 'disabled');
+        }
 
         return html()->attributes($attributes->merge($this->attributes)->toArray());
     }
@@ -113,12 +115,11 @@ class Link extends AbstractClickable
      * Get the value from config.
      *
      * @param  string  $key
-     * @param  mixed   $default
      *
      * @return mixed
      */
-    protected function getConfig($key, $default = null)
+    protected function getConfig($key)
     {
-        return config("arcanesoft.core.ui.links.{$key}", $default);
+        return config("arcanesoft.core.ui.buttons.{$key}");
     }
 }
