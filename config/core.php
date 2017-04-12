@@ -54,6 +54,7 @@ return [
 
                 'add'     => 'btn-primary',
                 'cancel'  => 'btn-default',
+                'clear'   => 'btn-warning',
                 'delete'  => 'btn-danger',
                 'detach'  => 'btn-danger',
                 'disable' => 'btn-inverse',
@@ -66,6 +67,7 @@ return [
 
             'icons' => [
                 'add'     => 'fa fa-fw fa-plus',
+                'clear'   => 'fa fa-fw fa-eraser',
                 'delete'  => 'fa fa-fw fa-trash-o',
                 'detach'  => 'fa fa-fw fa-chain-broken',
                 'disable' => 'fa fa-fw fa-power-off',
@@ -90,6 +92,7 @@ return [
 
                 'add'     => 'btn-primary',
                 'cancel'  => 'btn-default',
+                'clear'   => 'btn-warning',
                 'delete'  => 'btn-danger',
                 'detach'  => 'btn-danger',
                 'disable' => 'btn-inverse',
@@ -102,6 +105,7 @@ return [
 
             'icons' => [
                 'add'     => 'fa fa-fw fa-plus',
+                'clear'   => 'fa fa-fw fa-eraser',
                 'delete'  => 'fa fa-fw fa-trash-o',
                 'detach'  => 'fa fa-fw fa-chain-broken',
                 'disable' => 'fa fa-fw fa-power-off',

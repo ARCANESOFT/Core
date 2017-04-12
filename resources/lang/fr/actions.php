@@ -5,6 +5,7 @@ return [
     'add'        => 'ajouter',
     'attach'     => 'attacher',
     'cancel'     => 'annuler',
+    'clear'      => 'effacer',
     'deactivate' => 'désactiver',
     'delete'     => 'supprimer',
     'detach'     => 'détacher',
