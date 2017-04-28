@@ -12,6 +12,7 @@ class Link extends AbstractClickable
      |  Properties
      | -----------------------------------------------------------------
      */
+
     /** @var string */
     protected $url;
 
@@ -19,6 +20,7 @@ class Link extends AbstractClickable
      |  Constructor
      | -----------------------------------------------------------------
      */
+
     /**
      * LinkElement constructor.
      *
@@ -39,6 +41,7 @@ class Link extends AbstractClickable
      |  Getters & Setters
      | -----------------------------------------------------------------
      */
+
     /**
      * Set the link url.
      *
@@ -57,6 +60,7 @@ class Link extends AbstractClickable
      |  Main Methods
      | -----------------------------------------------------------------
      */
+
     /**
      * Make link instance.
      *
@@ -86,6 +90,7 @@ class Link extends AbstractClickable
      |  Other Methods
      | -----------------------------------------------------------------
      */
+
     /**
      * Render the attributes.
      *
