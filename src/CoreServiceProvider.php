@@ -10,10 +10,11 @@ use Arcanesoft\Core\Bases\PackageServiceProvider;
  */
 class CoreServiceProvider extends PackageServiceProvider
 {
-    /* ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
      |  Properties
-     | ------------------------------------------------------------------------------------------------
+     | -----------------------------------------------------------------
      */
+
     /**
      * Package name.
      *
@@ -21,24 +22,18 @@ class CoreServiceProvider extends PackageServiceProvider
      */
     protected $package = 'core';
 
-    /* ------------------------------------------------------------------------------------------------
-     |  Getters & Setters
-     | ------------------------------------------------------------------------------------------------
-     */
     /**
-     * Get the base path of the package.
+     * Register the core service provider.
      *
-     * @return string
+     * @var bool
      */
-    public function getBasePath()
-    {
-        return dirname(__DIR__);
-    }
+    protected $registerCoreServiceProvider = false;
 
-    /* ------------------------------------------------------------------------------------------------
-     |  Main Functions
-     | ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
+     |  Main Methods
+     | -----------------------------------------------------------------
      */
+
     /**
      * Register the service provider.
      */
@@ -79,17 +74,10 @@ class CoreServiceProvider extends PackageServiceProvider
         ];
     }
 
-    /* ------------------------------------------------------------------------------------------------
-     |  Services Functions
-     | ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
+     |  Services Methods
+     | -----------------------------------------------------------------
      */
-    /**
-     * Register the Core service provider.
-     */
-    protected function registerCoreServiceProvider()
-    {
-        // Skip the core service provider registration (self).
-    }
 
     /**
      * Register Foundation database.

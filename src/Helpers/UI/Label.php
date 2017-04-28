@@ -17,6 +17,7 @@ class Label
      |  Main Methods
      | -----------------------------------------------------------------
      */
+
     /**
      * Generate active icon label.
      *
@@ -197,6 +198,7 @@ class Label
      |  Other Methods
      | -----------------------------------------------------------------
      */
+
     /**
      * Generate the label.
      *

@@ -16,6 +16,7 @@ abstract class PackageServiceProvider extends ServiceProvider
      |  Properties
      | -----------------------------------------------------------------
      */
+
     /**
      * Vendor name.
      *
@@ -23,10 +24,18 @@ abstract class PackageServiceProvider extends ServiceProvider
      */
     protected $vendor = 'arcanesoft';
 
+    /**
+     * Register the core service provider.
+     *
+     * @var bool
+     */
+    protected $registerCoreServiceProvider = true;
+
     /* -----------------------------------------------------------------
      |  Getters & Setters
      | -----------------------------------------------------------------
      */
+
     /**
      * Get config key.
      *
@@ -61,6 +70,7 @@ abstract class PackageServiceProvider extends ServiceProvider
      |  Main Methods
      | -----------------------------------------------------------------
      */
+
     /**
      * Register the service provider.
      */
@@ -68,7 +78,9 @@ abstract class PackageServiceProvider extends ServiceProvider
     {
         parent::register();
 
-        $this->registerCoreServiceProvider();
+        if ($this->registerCoreServiceProvider) {
+            $this->registerCoreServiceProvider();
+        }
     }
 
     /**

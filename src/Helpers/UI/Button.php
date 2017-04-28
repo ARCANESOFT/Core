@@ -12,6 +12,7 @@ class Button extends AbstractClickable
      |  Properties
      | -----------------------------------------------------------------
      */
+
     /** @var string */
     protected $type;
 
@@ -19,6 +20,7 @@ class Button extends AbstractClickable
      |  Constructor
      | -----------------------------------------------------------------
      */
+
     /**
      * Button constructor.
      *
@@ -39,6 +41,7 @@ class Button extends AbstractClickable
      |  Getters & Setters
      | -----------------------------------------------------------------
      */
+
     /**
      * Set the button type.
      *
@@ -57,6 +60,7 @@ class Button extends AbstractClickable
      |  Main Methods
      | -----------------------------------------------------------------
      */
+
     /**
      * Make a button instance.
      *
@@ -86,6 +90,7 @@ class Button extends AbstractClickable
      |  Other Methods
      | -----------------------------------------------------------------
      */
+
     /**
      * Render the attributes.
      *

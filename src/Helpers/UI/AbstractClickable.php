@@ -15,6 +15,7 @@ abstract class AbstractClickable implements Htmlable
      |  Properties
      | -----------------------------------------------------------------
      */
+
     /** @var string */
     protected $action;
 
@@ -43,6 +44,7 @@ abstract class AbstractClickable implements Htmlable
      |  Getters & Setters
      | -----------------------------------------------------------------
      */
+
     /**
      * Set the action.
      *
@@ -214,6 +216,7 @@ abstract class AbstractClickable implements Htmlable
      |  Main Methods
      | -----------------------------------------------------------------
      */
+
     /**
      * Get the string content for the link instance.
      *
@@ -228,6 +231,7 @@ abstract class AbstractClickable implements Htmlable
      |  Other Methods
      | -----------------------------------------------------------------
      */
+
     /**
      * Render the value.
      *

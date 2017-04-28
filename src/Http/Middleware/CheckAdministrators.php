@@ -1,5 +1,6 @@
 <?php namespace Arcanesoft\Core\Http\Middleware;
 
+use Arcanedev\Support\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 
@@ -9,12 +10,13 @@ use Illuminate\Http\Request;
  * @package  Arcanesoft\Foundation\Http\Middleware
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
-class CheckAdministrators
+class CheckAdministrators extends Middleware
 {
-    /* ------------------------------------------------------------------------------------------------
-     |  Main Functions
-     | ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
+     |  Main Methods
+     | -----------------------------------------------------------------
      */
+
     /**
      * Run the request filter.
      *
@@ -35,10 +37,11 @@ class CheckAdministrators
         return $next($request);
     }
 
-    /* ------------------------------------------------------------------------------------------------
-     |  Other Functions
-     | ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
+     |  Other Methods
+     | -----------------------------------------------------------------
      */
+
     /**
      * Check if the user is allowed.
      *

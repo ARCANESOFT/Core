@@ -6,6 +6,7 @@ return [
     'attach'     => 'attacher',
     'cancel'     => 'annuler',
     'clear'      => 'effacer',
+    'create'     => 'créer',
     'deactivate' => 'désactiver',
     'delete'     => 'supprimer',
     'detach'     => 'détacher',

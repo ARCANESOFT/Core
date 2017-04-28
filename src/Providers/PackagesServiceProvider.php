@@ -21,8 +21,9 @@ class PackagesServiceProvider extends ServiceProvider
      |  Main Methods
      | -----------------------------------------------------------------
      */
+
     /**
-     * {@inheritdoc}
+     * Register the service provider.
      */
     public function register()
     {
@@ -44,6 +45,7 @@ class PackagesServiceProvider extends ServiceProvider
      |  Packages
      | -----------------------------------------------------------------
      */
+
     /**
      * Register the API Helper Package.
      */

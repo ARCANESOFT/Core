@@ -16,6 +16,7 @@ class RouteServiceProvider extends ServiceProvider
      |  Properties
      | -----------------------------------------------------------------
      */
+
     /**
      * The application's route middleware.
      *
@@ -31,6 +32,7 @@ class RouteServiceProvider extends ServiceProvider
      |  Main Methods
      | -----------------------------------------------------------------
      */
+
     /**
      * Define the routes for the application.
      *
