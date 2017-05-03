@@ -19,4 +19,5 @@ return [
     'show'       => 'show',
     'sync'       => 'sync',
     'update'     => 'update',
+    'validate'   => 'validate',
 ];

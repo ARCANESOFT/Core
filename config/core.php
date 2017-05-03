@@ -66,6 +66,7 @@ return [
                 'restore'  => 'btn-primary',
                 'show'     => 'btn-info',
                 'update'   => 'btn-warning',
+                'validate' => 'btn-success',
             ],
 
             'icons' => [
@@ -82,6 +83,7 @@ return [
                 'restore'  => 'fa fa-fw fa-reply',
                 'show'     => 'fa fa-fw fa-search',
                 'update'   => 'fa fa-fw fa-pencil',
+                'validate' => 'fa fa-fw fa-check',
             ],
         ],
 
@@ -110,6 +112,7 @@ return [
                 'restore'  => 'btn-primary',
                 'show'     => 'btn-info',
                 'update'   => 'btn-warning',
+                'validate' => 'btn-success',
             ],
 
             'icons' => [
@@ -126,6 +129,7 @@ return [
                 'restore'  => 'fa fa-fw fa-reply',
                 'show'     => 'fa fa-fw fa-search',
                 'update'   => 'fa fa-fw fa-pencil',
+                'validate' => 'fa fa-fw fa-check',
             ],
 
         ],
