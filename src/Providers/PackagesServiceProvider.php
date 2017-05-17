@@ -4,9 +4,9 @@ use Arcanedev\Breadcrumbs\BreadcrumbsServiceProvider;
 use Arcanedev\Hasher\HasherServiceProvider;
 use Arcanedev\LaravelApiHelper\ApiHelperServiceProvider;
 use Arcanedev\LaravelHtml\HtmlServiceProvider;
+use Arcanedev\LaravelSettings\SettingsServiceProvider;
 use Arcanedev\SeoHelper\SeoHelperServiceProvider;
 use Arcanedev\Support\ServiceProvider;
-use Arcanesoft\Settings\SettingsServiceProvider;
 use Arcanesoft\Sidebar\SidebarServiceProvider;
 
 /**
@@ -61,7 +61,7 @@ class PackagesServiceProvider extends ServiceProvider
     {
         $this->registerProvider(SettingsServiceProvider::class);
 
-        $this->alias('Settings', \Arcanesoft\Settings\Facades\Settings::class);
+        $this->alias('Settings', \Arcanedev\LaravelSettings\Facades\Settings::class);
     }
 
     /**

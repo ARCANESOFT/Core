@@ -21,9 +21,9 @@
         "arcanedev/seo-helper":         "~1.3",
         "arcanedev/support":            "~4.0",
         "arcanesoft/contracts":         "~2.0",
-        "arcanesoft/settings":          "~0.5",
         "arcanesoft/sidebar":           "~0.2",
-        "arcanedev/laravel-api-helper": "~2.0"
+        "arcanedev/laravel-api-helper": "~2.0",
+        "arcanedev/laravel-settings":   "~1.0"
     },
     "require-dev": {
         "phpunit/phpcov":  "~3.0",
