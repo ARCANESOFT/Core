@@ -1,8 +1,10 @@
 <?php
 
+use Arcanesoft\Core\Entities\Yon;
+
 return [
-    'yes'         => 'oui',
-    'no'          => 'non',
+    Yon::YES      => 'oui',
+    Yon::NO       => 'non',
 
     'saved'       => 'enregistré',
     'created'     => 'créé',
