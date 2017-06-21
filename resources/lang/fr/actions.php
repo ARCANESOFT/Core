@@ -7,6 +7,7 @@ return [
     'backup'     => 'sauvegarder',
     'cancel'     => 'annuler',
     'clear'      => 'effacer',
+    'close'      => 'fermer',
     'create'     => 'créer',
     'deactivate' => 'désactiver',
     'delete'     => 'supprimer',

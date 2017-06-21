@@ -7,6 +7,7 @@ return [
     'backup'     => 'backup',
     'cancel'     => 'cancel',
     'clear'      => 'clear',
+    'close'      => 'close',
     'create'     => 'create',
     'deactivate' => 'deactivate',
     'delete'     => 'delete',
