@@ -2,6 +2,7 @@
 
 use Arcanedev\Breadcrumbs\BreadcrumbsServiceProvider;
 use Arcanedev\Hasher\HasherServiceProvider;
+use Arcanedev\LaravelActive\LaravelActiveServiceProvider;
 use Arcanedev\LaravelApiHelper\ApiHelperServiceProvider;
 use Arcanedev\LaravelHtml\HtmlServiceProvider;
 use Arcanedev\LaravelSettings\SettingsServiceProvider;
@@ -29,6 +30,7 @@ class PackagesServiceProvider extends ServiceProvider
     {
         parent::register();
 
+        $this->registerLaravelActive();
         $this->registerLaravelApiHelperPackage();
         $this->registerBreadcrumbsPackage();
         $this->registerHasherPackage();
@@ -45,6 +47,14 @@ class PackagesServiceProvider extends ServiceProvider
      |  Packages
      | -----------------------------------------------------------------
      */
+
+    /**
+     * Register the Laravel Active package.
+     */
+    private function registerLaravelActive()
+    {
+        $this->registerProvider(LaravelActiveServiceProvider::class);
+    }
 
     /**
      * Register the API Helper Package.
