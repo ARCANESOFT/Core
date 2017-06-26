@@ -2,6 +2,7 @@
 
 use Arcanedev\Support\Http\Middleware;
 use Closure;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
 
 /**
@@ -24,15 +25,13 @@ class CheckAdministrators extends Middleware
      * @param  \Closure                  $next
      *
      * @return mixed
+     *
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function handle(Request $request, Closure $next)
     {
-        /** @var  \Arcanesoft\Contracts\Auth\Models\User  $user */
-        $user = auth()->user();
-
-        if (is_null($user) || ! $this->isAllowed($user)) {
-            abort(404, "You're not allowed !");
-        }
+        if ( ! $this->isAllowed())
+            $this->failedAuthorization();
 
         return $next($request);
     }
@@ -45,12 +44,26 @@ class CheckAdministrators extends Middleware
     /**
      * Check if the user is allowed.
      *
-     * @param  \Arcanesoft\Contracts\Auth\Models\User  $user
-     *
      * @return bool
      */
-    private function isAllowed($user)
+    protected function isAllowed()
     {
+        /** @var  \Arcanesoft\Contracts\Auth\Models\User  $user */
+        if (is_null($user = auth()->user()))
+            return false;
+
         return $user->isAdmin() || $user->isModerator();
+    }
+
+    /**
+     * Handle a failed authorization attempt.
+     *
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    protected function failedAuthorization()
+    {
+        throw new AuthorizationException(
+            '[Unauthorized] You are not allowed to perform this action.', 403
+        );
     }
 }
