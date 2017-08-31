@@ -73,7 +73,7 @@ return [
             'icons' => [
                 'add'      => 'fa fa-fw fa-plus',
                 'backup'   => 'fa fa-fw fa-floppy-o',
-                'cancel'   => 'fa fa-fw fa-times',
+                'cancel'   => 'fa fa-fw fa-undo',
                 'clear'    => 'fa fa-fw fa-eraser',
                 'close'    => 'fa fa-fw fa-times',
                 'create'   => 'fa fa-fw fa-plus',
@@ -122,7 +122,7 @@ return [
             'icons' => [
                 'add'      => 'fa fa-fw fa-plus',
                 'backup'   => 'fa fa-fw fa-floppy-o',
-                'cancel'   => 'fa fa-fw fa-times',
+                'cancel'   => 'fa fa-fw fa-undo',
                 'clear'    => 'fa fa-fw fa-eraser',
                 'close'    => 'fa fa-fw fa-times',
                 'create'   => 'fa fa-fw fa-plus',
