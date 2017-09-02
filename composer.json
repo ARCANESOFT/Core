@@ -13,22 +13,22 @@
     "type":    "library",
     "license": "MIT",
     "require": {
-        "php":                          ">=5.6.4",
-        "arcanedev/breadcrumbs":        "~3.0",
-        "arcanedev/hasher":             "~2.1",
-        "arcanedev/laravel-active":     "^1.0",
-        "arcanedev/laravel-api-helper": "~2.0",
-        "arcanedev/laravel-html":       "~5.4",
-        "arcanedev/laravel-settings":   "~1.0",
-        "arcanedev/notify":             "~3.3",
-        "arcanedev/seo-helper":         "~1.3",
+        "php":                          ">=7.0",
+        "arcanedev/breadcrumbs":        "~3.1",
+        "arcanedev/hasher":             "~2.2",
+        "arcanedev/laravel-active":     "~1.1",
+        "arcanedev/laravel-api-helper": "~2.2",
+        "arcanedev/laravel-html":       "~5.5",
+        "arcanedev/laravel-settings":   "~2.0",
+        "arcanedev/notify":             "~3.4",
+        "arcanedev/seo-helper":         "~1.4",
         "arcanedev/support":            "~4.0",
         "arcanesoft/contracts":         "~2.0",
-        "arcanesoft/sidebar":           "~0.2"
+        "arcanesoft/sidebar":           "~1.0"
     },
     "require-dev": {
-        "phpunit/phpcov":  "~3.0",
-        "phpunit/phpunit": "~5.0"
+        "phpunit/phpunit": "~6.0",
+        "phpunit/phpcov":  "~4.0"
     },
     "autoload": {
         "psr-4": {
@@ -42,11 +42,6 @@
         }
     },
     "scripts": {
-        "testbench": "composer require --dev \"orchestra/testbench=~3.4\""
-    },
-    "extra": {
-        "branch-alias": {
-            "dev-master": "1.0-dev"
-        }
+        "testbench": "composer require --dev \"orchestra/testbench=~3.5\""
     }
 }

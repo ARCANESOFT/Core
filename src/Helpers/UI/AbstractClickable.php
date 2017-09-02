@@ -50,7 +50,7 @@ abstract class AbstractClickable implements Htmlable
      *
      * @param  string  $action
      *
-     * @return \Arcanesoft\Core\Helpers\UI\AbstractClickable
+     * @return $this
      */
     public function setAction($action)
     {
@@ -64,7 +64,7 @@ abstract class AbstractClickable implements Htmlable
      *
      * @param  array  $attributes
      *
-     * @return \Arcanesoft\Core\Helpers\UI\AbstractClickable
+     * @return $this
      */
     public function setAttributes(array $attributes)
     {
@@ -79,7 +79,7 @@ abstract class AbstractClickable implements Htmlable
      * @param  string  $key
      * @param  mixed   $value
      *
-     * @return \Arcanesoft\Core\Helpers\UI\AbstractClickable
+     * @return $this
      */
     public function setAttribute($key, $value)
     {
@@ -93,7 +93,7 @@ abstract class AbstractClickable implements Htmlable
      *
      * @param  string  $class
      *
-     * @return \Arcanesoft\Core\Helpers\UI\AbstractClickable
+     * @return $this
      */
     public function appendClass($class)
     {
@@ -107,7 +107,7 @@ abstract class AbstractClickable implements Htmlable
      *
      * @param  bool  $disabled
      *
-     * @return \Arcanesoft\Core\Helpers\UI\AbstractClickable
+     * @return $this
      */
     public function setDisabled($disabled)
     {
@@ -127,7 +127,7 @@ abstract class AbstractClickable implements Htmlable
      *
      * @param  string|array  $attributes
      *
-     * @return \Arcanesoft\Core\Helpers\UI\AbstractClickable
+     * @return $this
      */
     public function forgetAttribute($attributes)
     {
@@ -141,7 +141,7 @@ abstract class AbstractClickable implements Htmlable
      *
      * @param  string  $size
      *
-     * @return \Arcanesoft\Core\Helpers\UI\AbstractClickable
+     * @return $this
      */
     public function size($size)
     {
@@ -155,7 +155,7 @@ abstract class AbstractClickable implements Htmlable
      *
      * @param  bool  $withTitle
      *
-     * @return \Arcanesoft\Core\Helpers\UI\AbstractClickable
+     * @return $this
      */
     public function withTitle($withTitle)
     {
@@ -169,7 +169,7 @@ abstract class AbstractClickable implements Htmlable
      *
      * @var  bool  $withIcon
      *
-     * @return \Arcanesoft\Core\Helpers\UI\AbstractClickable
+     * @return $this
      */
     public function withIcon($withIcon)
     {
@@ -183,7 +183,7 @@ abstract class AbstractClickable implements Htmlable
      *
      * @param  bool  $withTooltip
      *
-     * @return \Arcanesoft\Core\Helpers\UI\AbstractClickable
+     * @return $this
      */
     public function withTooltip($withTooltip)
     {
@@ -195,7 +195,7 @@ abstract class AbstractClickable implements Htmlable
     /**
      * Show only the icon and the title as tooltip.
      *
-     * @return \Arcanesoft\Core\Helpers\UI\AbstractClickable
+     * @return $this
      */
     public function onlyIcon()
     {
@@ -205,7 +205,7 @@ abstract class AbstractClickable implements Htmlable
     /**
      * Add loading text attribute.
      *
-     * @return \Arcanesoft\Core\Helpers\UI\AbstractClickable
+     * @return $this
      */
     public function withLoadingText()
     {
