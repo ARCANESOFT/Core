@@ -267,7 +267,7 @@ class LinkTest extends TestCase
     public function it_can_generate_with_loading_text_attribute()
     {
         $link     = Link::make('add', '#')->withLoadingText();
-        $expected = '<a href="#" class="btn btn-primary" data-loading-text="Loading&amp;hellip;">'.
+        $expected = '<a href="#" class="btn btn-primary" data-loading-text="Loading&hellip;">'.
                         '<i class="fa fa-fw fa-plus"></i> Add'.
                     '</a>';
 

@@ -255,7 +255,7 @@ class ButtonTest extends TestCase
     public function it_can_generate_with_loading_text_attribute()
     {
         $button   = Button::make('add')->withLoadingText();
-        $expected = '<button type="button" class="btn btn-primary" data-loading-text="Loading&amp;hellip;">'.
+        $expected = '<button type="button" class="btn btn-primary" data-loading-text="Loading&hellip;">'.
                         '<i class="fa fa-fw fa-plus"></i> Add'.
                     '</button>';
 
