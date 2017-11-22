@@ -1,10 +1,10 @@
 <?php
 
-use Arcanesoft\Core\Entities\Yon;
+use Arcanesoft\Core\Entities\YesOrNo;
 
 return [
-    Yon::YES      => 'oui',
-    Yon::NO       => 'non',
+    YesOrNo::YES  => 'oui',
+    YesOrNo::NO   => 'non',
 
     'saved'       => 'enregistré',
     'created'     => 'créé',
@@ -19,6 +19,8 @@ return [
     'activated'   => 'activé',
     'disabled'    => 'désactivé',
     'deactivated' => 'désactivé',
+    'checked'     => 'coché',
+    'unchecked'   => 'décoché',
 
     'confirmed'   => 'confirmé',
     'unconfirmed' => 'non confirmé',

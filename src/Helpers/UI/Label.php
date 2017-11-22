@@ -61,7 +61,7 @@ class Label
      *
      * @return \Illuminate\Support\HtmlString
      */
-    public static function activeStatus($active, array $options = [], $withIcon)
+    public static function activeStatus($active, array $options = [], $withIcon = true)
     {
         // TODO: Refactor the options to a dedicated config file.
         $classes      = Arr::get($options, 'classes', [
@@ -78,6 +78,74 @@ class Label
         ]);
 
         $key        = $active ? 'enabled' : 'disabled';
+        $attributes = ['class' => $classes[$key]];
+
+        return $withIcon
+            ? static::generateWithIcon(ucfirst(trans($translations[$key])), $icons[$key], $attributes)
+            : static::generate(ucfirst(trans($translations[$key])), $attributes);
+    }
+
+    /**
+     * Generate check status label.
+     *
+     * @param  bool   $checked
+     * @param  array  $options
+     * @param  bool   $withTooltip
+     *
+     * @return \Illuminate\Support\HtmlString
+     */
+    public static function checkIcon($checked, array $options = [], $withTooltip = true)
+    {
+        $classes      = Arr::get($options, 'classes', [
+            'checked'   => 'label label-success',
+            'unchecked' => 'label label-default',
+        ]);
+
+        $translations = Arr::get($options, 'trans', [
+            'checked'   => 'core::statuses.checked',
+            'unchecked' => 'core::statuses.unchecked',
+        ]);
+
+        $icons = Arr::get($options, 'icons', [
+            'checked'   => 'fa fa-fw fa-check',
+            'unchecked' => 'fa fa-fw fa-ban',
+        ]);
+
+        $key        = $checked ? 'checked' : 'unchecked';
+        $attributes = ['class' => $classes[$key]];
+        $value      = static::generateIcon($icons[$key]);
+
+        return $withTooltip
+            ? static::generateWithTooltip($value, ucfirst(trans($translations[$key])), $attributes)
+            : static::generate($value, $attributes);
+    }
+
+    /**
+     * Generate check status label.
+     *
+     * @param  bool   $checked
+     * @param  array  $options
+     * @param  bool   $withIcon
+     *
+     * @return \Illuminate\Support\HtmlString
+     */
+    public static function checkStatus($checked, array $options = [], $withIcon = true)
+    {
+        // TODO: Refactor the options to a dedicated config file.
+        $classes      = Arr::get($options, 'classes', [
+            'checked'   => 'label label-success',
+            'unchecked' => 'label label-default',
+        ]);
+        $translations = Arr::get($options, 'trans', [
+            'checked'   => 'core::statuses.checked',
+            'unchecked' => 'core::statuses.unchecked',
+        ]);
+        $icons = Arr::get($options, 'icons', [
+            'checked'   => 'fa fa-fw fa-check',
+            'unchecked' => 'fa fa-fw fa-ban',
+        ]);
+
+        $key        = $checked ? 'checked' : 'unchecked';
         $attributes = ['class' => $classes[$key]];
 
         return $withIcon
