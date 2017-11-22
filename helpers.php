@@ -79,6 +79,36 @@ if ( ! function_exists('label_active_status')) {
     }
 }
 
+if ( ! function_exists('label_check_icon')) {
+    /**
+     * Generate check icon label.
+     *
+     * @param  bool   $checked
+     * @param  array  $options
+     * @param  bool   $withTooltip
+     *
+     * @return \Illuminate\Support\HtmlString
+     */
+    function label_check_icon($checked, array $options = [], $withTooltip = true) {
+        return Label::checkIcon($checked, $options, $withTooltip);
+    }
+}
+
+if ( ! function_exists('label_check_status')) {
+    /**
+     * Generate check status label.
+     *
+     * @param  bool   $checked
+     * @param  array  $options
+     * @param  bool   $withIcon
+     *
+     * @return \Illuminate\Support\HtmlString
+     */
+    function label_check_status($checked, array $options = [], $withIcon = true) {
+        return Label::checkStatus($checked, $options, $withIcon);
+    }
+}
+
 if ( ! function_exists('label_count')) {
     /**
      * Generate count label.
